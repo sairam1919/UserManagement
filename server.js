@@ -3,18 +3,26 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
+var logger = require("morgan");
+var cors = require("cors");
 
 // Get our API routes
 const api = require('./server/routes/api');
 
 const app = express();
 
+app.use(cors());
+app.use(logger("dev"));
+app.use(express.json());
+
 // Parsers for POST data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 // Point static path to dist
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "..", "build")));
 
 
 // Set our api routes
@@ -22,13 +30,13 @@ app.use('/api', api);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build/index.html'));
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 /**
  * Get port from environment and store in Express.
  */
-const port = process.env.PORT || '3000';
+const port = process.env.PORT || '4000';
 app.set('port', port);
 
 /**

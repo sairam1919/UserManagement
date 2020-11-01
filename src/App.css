@@ -1,0 +1,133 @@
+.content {
+  background-image: url("./desktop-loginbg.png");
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  background-size: 100%;
+}
+
+.text-input {
+  color: #767680;
+  font-family: Lato;
+  font-size: 14px;
+  letter-spacing: 0.23px;
+  border: none;
+  outline: none;
+  padding: 5px;
+  width: 450px;
+  color: rgb(118, 118, 128);
+  font-family: Lato;
+  font-size: 20px;
+  letter-spacing: 0.23px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 26px;
+  padding-left: 10px;
+  position: relative;
+}
+
+.heading-license {
+  font-size: 30px;
+  margin: 10px 250px;
+  height: 28px;
+  color: #494953;
+  font-family: Lato;
+  line-height: 27px;
+  display: inline-block;
+  font-weight: bolder;
+}
+
+/* Clear floats after the columns */
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.label-license {
+  color: #767680;
+  font-family: Lato;
+  font-size: 14px;
+  letter-spacing: 0.23px;
+  border: none;
+  outline: none;
+  padding: 10px;
+  width: 250px;
+}
+
+.input-div {
+  float: left;
+  padding: 15px 10px 10px 10px;
+  height: 30px;
+  width: 10%;
+}
+
+.label-div {
+  float: left;
+  /* padding: 10px; */
+  padding: 17px 10px 10px 90px;
+  height: 30px;
+  width: 12%;
+  color: #4A4A4A;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  /* text-align: right; */
+  line-height: 15px;
+}
+
+.license {
+  margin: 10px 10px 10px 100px;
+}
+
+.module-li {
+  list-style-type: none;
+  width: 300px;
+}
+
+.ex-date {
+  height: 17px;
+}
+
+.generate-btn {
+  font-family: lato;
+  background-color: #503291;
+  height: 40px;
+  width: 150px;
+  font-weight: bolder;
+  font-size: 22px !important;
+  color: #fff;
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+  border: none;
+}
+
+.gererate-btn-div {
+  margin: 190px 10px 10px 532px;
+}
+
+.fetch-btn {
+  position: relative;
+  top: 20px;
+  left: 350px;
+}
+
+.fetch-btn-data {
+  font-family: lato;
+  background-color: #503291;
+  height: 30px;
+  width: 80px;
+  font-weight: bolder;
+  font-size: 16px !important;
+  color: #fff;
+  padding: .25rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem;
+  border: none;
+  cursor: pointer;
+}
