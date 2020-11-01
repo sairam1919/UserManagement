@@ -21,16 +21,17 @@ class Dashboard extends React.Component {
     handleClick(option) {
         console.log("option", option);
         switch (option) {
-            case "createEmployee": this.setState({ isOptionSelected: true, currentComponent: <CreateEmployee handleBackButton={this.handleBackButton()} /> })
+            case "createEmployee": this.setState({ isOptionSelected: true, currentComponent: <CreateEmployee handleBackButton={this.handleBackButton} /> })
                 break;
-            case "generateVisitorPass": this.setState({ isOptionSelected: true, currentComponent: <GenerateVisitorPass handleBackButton={this.handleBackButton()} /> })
+            case "generateVisitorPass": this.setState({ isOptionSelected: true, currentComponent: <GenerateVisitorPass handleBackButton={this.handleBackButton} /> })
                 break;
-            case "userInfo": this.setState({ isOptionSelected: true, currentComponent: <UserInfo handleBackButton={this.handleBackButton()} /> })
+            case "userInfo": this.setState({ isOptionSelected: true, currentComponent: <UserInfo handleBackButton={this.handleBackButton} /> })
                 break;
         }
     }
 
     handleBackButton() {
+        console.log("Inside the BackButton method");
         this.setState({ isOptionSelected: false })
     }
 

@@ -1,6 +1,5 @@
-import { Button } from 'bootstrap';
 import React from 'react';
-import Constants from "./Constants.js"
+import Backbutton from './Backbutton.jsx';
 
 class CreateEmployee extends React.Component {
     constructor(props) {
@@ -8,12 +7,18 @@ class CreateEmployee extends React.Component {
         this.state = {
            
         };
+        this.handleBackbutton = this.handleBackbutton.bind(this);
     }
-
+    handleBackbutton(){
+        console.log("Inside the BackButton method");
+        this.props.handleBackbutton();
+    }
 
     render() {
         return (
             <div>
+                <Backbutton handleBackbutton = {this.handleBackbutton}
+                />
                CreateEmployee
             </div>
         )
