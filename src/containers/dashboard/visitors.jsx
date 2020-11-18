@@ -70,7 +70,7 @@ const Visitors = () => {
     return (
         <div>
             <BootstrapTable
-              keyField={columns[0].dataField}
+              keyField={columns[2].dataField}
               data={rows}
               columns={columns}
               wrapperClasses="table-responsive"
