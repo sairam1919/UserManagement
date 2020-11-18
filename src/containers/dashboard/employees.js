@@ -3,6 +3,7 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 
 const Employees = () => {
+    const [ searchValue, setSearchValue] = useState('');
     const columns = [
         {
           dataField: 'user_name',
@@ -29,7 +30,7 @@ const Employees = () => {
           },
     ];
 
-    const rows = [{
+    let rows = [{
         user_name: "HawkinsA",
         first_name: "Arthur",
         last_name: "Hawkins",
@@ -54,8 +55,22 @@ const Employees = () => {
         role: "Admin"
     },
 ];
+
+const handleSearch = (e) => {
+    setSearchValue(e.target.value.toLowerCase());
+}
+
+if(searchValue) {
+    rows = rows.filter((item) => {
+        return (item.user_name.toLowerCase().indexOf(searchValue) > -1 || item.first_name.toLowerCase().indexOf(searchValue) > -1 || item.last_name.toLowerCase().indexOf(searchValue) > -1)
+    });
+}
+
     return (
         <div>
+            <div className="active-cyan-4 mb-4" style={{ margin: '20px 20px'}}>
+            <input className="form-control mr-3 w-25" type="text" placeholder="Search by first, last and full name" aria-label="Search" onChange={handleSearch}/>
+            </div>
              <BootstrapTable
               keyField={columns[0].dataField}
               data={rows}
