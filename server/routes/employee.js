@@ -1,83 +1,55 @@
 const express = require('express');
 const router = express.Router();
-const sql = require("mssql");
 const fs = require("fs");
 const server = require("../server");
-
+const mysql = require('mysql');
 
 //Initialling connection string
-var dbConfig = {
-    user: "portaluser",
-    password: "MerckApp1@",
-    server: "localhost",
-    database: "UserManagement"
-};
+var connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'Sram@225',
+    database: 'usermanagement'
+});
 
 let apiResponse = { "message": "", "result": "", "statuscode": "" };
 
-
 //GET API to Fetch all Users
 router.get("/user", (req, res) => {
-    var query = "select * from [Employee]";
-    sql.connect(dbConfig, (err) => {
-        if (err) {
-            console.log("Error while connecting database :- " + err);
+    console.log("Inside the method call");
+    connection.query('SELECT * FROM employee', function (error, results, fields) {
+        console.log("Inside the connection");
+        if (error) {
+            console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
             apiResponse.statuscode = "400";
-            apiResponse.result = err;
+            apiResponse.result = error;
             res.send(apiResponse);
-        }
-        else {
-            var request = new sql.Request();
-            request.query(query, function (err, rs) {
-                if (err) {
-                    apiResponse.message = "Error while querying database";
-                    apiResponse.statuscode = "400";
-                    apiResponse.result = err;
-                    res.send(err);
-                    sql.close();
-                }
-                else {
-                    apiResponse.statuscode = "200";
-                    apiResponse.message = "Successfully Fetched the UserDetails";
-                    apiResponse.result = rs.recordset
-                    res.send(apiResponse);
-                    sql.close();
-                }
-            });
+        } else {
+            console.log("Inside the connection2", results);
+            apiResponse.statuscode = "200";
+            apiResponse.message = "Successfully Fetched the UserDetails";
+            apiResponse.result = results;
+            res.send(apiResponse);
         }
     });
 });
 
 //GET API to Fetch a Specific User Data
 router.get("/user/:id", (req, res) => {
-    var query = "select * from [Employee] where UserName=" + req.params.id;
-    sql.connect(dbConfig, (err) => {
-        if (err) {
-            console.log("Error while connecting database :- " + err);
+    connection.query('SELECT * FROM employee WHERE UserName=' + req.params.id, function (error, results, fields) {
+        console.log("Inside the connection");
+        if (error) {
+            console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
             apiResponse.statuscode = "400";
-            apiResponse.result = err;
+            apiResponse.result = error;
             res.send(apiResponse);
-        }
-        else {
-            var request = new sql.Request();
-            request.query(query, function (err, rs) {
-                if (err) {
-                    apiResponse.message = "Error while querying database";
-                    apiResponse.statuscode = "400";
-                    apiResponse.result = err;
-                    res.send(err);
-                    sql.close();
-                }
-                else {
-                    apiResponse.statuscode = "200";
-                    apiResponse.message = "Successfully Fetched the UserDetails";
-                    apiResponse.result = rs.recordset
-                    res.send(apiResponse);
-                    sql.close();
-                }
-            });
+        } else {
+            apiResponse.statuscode = "200";
+            apiResponse.message = "Successfully Fetched the UserDetails";
+            apiResponse.result = results;
+            res.send(apiResponse);
         }
     });
 });
@@ -85,41 +57,25 @@ router.get("/user/:id", (req, res) => {
 router.post("/login", (req, res) => {
     let UserName = req.body.userName;
     let Password = req.body.password;
-    var query = "select * from [Employee] where UserName=" + "'" + UserName + "'";
-    sql.connect(dbConfig, (err) => {
-        if (err) {
-            console.log("Error while connecting database :- " + err);
+    connection.query('SELECT * FROM employee WHERE UserName=' + "'" + UserName + "'", function (error, results, fields) {
+        console.log("Inside the connection");
+        if (error) {
+            console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
             apiResponse.statuscode = "400";
-            apiResponse.result = err;
+            apiResponse.result = error;
             res.send(apiResponse);
-        }
-        else {
-            var request = new sql.Request();
-            request.query(query, function (err, rs) {
-                if (err) {
-                    apiResponse.message = "Error while querying database";
-                    apiResponse.statuscode = "400";
-                    apiResponse.result = err;
-                    res.send(err);
-                    sql.close();
-                }
-                else {
-                    apiResponse.statuscode = "200";
-                    apiResponse.message = "User Authenticated Successfully";
-                    apiResponse.result = rs.recordset
-                    res.send(apiResponse);
-                    sql.close();
-                }
-            });
+        } else {
+            if (results) {
+
+            } else {
+                apiResponse.statuscode = "200";
+                apiResponse.message = "User Authenticated Successfully";
+                apiResponse.result = results;
+                res.send(apiResponse);
+            }
         }
     });
-})
-
-router.get("/fetchConfig", (req, res) => {
-    let data = fs.readFileSync('server/routes/config.json',
-        { encoding: 'utf8', flag: 'r' });
-    res.send(data);
 })
 
 //POST API
@@ -135,34 +91,38 @@ router.post("/user", (req, res) => {
     let userData = req.body.userData;
     let role = req.body.role;
     let password = req.body.password;
+    let UserId = '';
 
-    var query = "INSERT INTO [Employee] ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, Password ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'" + " )";
-    sql.connect(dbConfig, (err) => {
-        if (err) {
-            console.log("Error while connecting database :- " + err);
+    var query1 = "INSERT INTO employee ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, Password ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'" + " )";
+    connection.query(query1, function (error, results, fields) {
+        if (error) {
+            console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
             apiResponse.statuscode = "400";
-            apiResponse.result = err;
+            apiResponse.result = error;
+            res.send(apiResponse);
+        } else {
+            apiResponse.statuscode = "200";
+            apiResponse.message = "User Created Successfully";
+            apiResponse.result = results;
             res.send(apiResponse);
         }
-        else {
-            var request = new sql.Request();
-            request.query(query, function (err, rs) {
-                if (err) {
-                    apiResponse.message = "Error while querying database";
-                    apiResponse.statuscode = "400";
-                    apiResponse.result = err;
-                    res.send(err);
-                    sql.close();
-                }
-                else {
-                    apiResponse.statuscode = "200";
-                    apiResponse.message = "User Created Successfully";
-                    apiResponse.result = ""
-                    res.send(apiResponse);
-                    sql.close();
-                }
-            });
+    });
+
+    var query2 = "INSERT INTO userpassinfo ( UserPass, UserID, UserImage, UserIDProof, UserName, UserIDProofNumber, PassImage, ExpairyDate) VALUES (  '1' ," + "'" + username + "'" + " )";
+    connection.query(query2, function (error, results, fields) {
+        console.log("Inside the connection");
+        if (error) {
+            console.log("Error while connecting database" + error);
+            apiResponse.message = "Error while connecting database"
+            apiResponse.statuscode = "400";
+            apiResponse.result = error;
+            res.send(apiResponse);
+        } else {
+            apiResponse.statuscode = "200";
+            apiResponse.message = "User Created Successfully";
+            apiResponse.result = results;
+            res.send(apiResponse);
         }
     });
 });
@@ -170,79 +130,34 @@ router.post("/user", (req, res) => {
 //PUT API
 router.put("/user/:id", (req, res) => {
     console.log("Request Received for the Update User");
-    var query = "UPDATE [Employee] SET OutTime= " + req.body.outTime + " , InTime=  " + req.body.inTime + " , Password= " + req.body.password + "   WHERE Id= " + req.params.id;
-    sql.connect(dbConfig, (err) => {
-        if (err) {
-            console.log("Error while connecting database :- " + err);
+    var query1 = "UPDATE [Employee] SET OutTime= " + req.body.outTime + " , InTime=  " + req.body.inTime + " , Password= " + req.body.password + "   WHERE Id= " + req.params.id;
+    connection.query(query1, function (error, results, fields) {
+        console.log("Inside the connection");
+        if (error) {
+            console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
             apiResponse.statuscode = "400";
-            apiResponse.result = err;
+            apiResponse.result = error;
             res.send(apiResponse);
-        }
-        else {
-            var request = new sql.Request();
-            request.query(query, function (err, rs) {
-                if (err) {
-                    apiResponse.message = "Error while querying database";
-                    apiResponse.statuscode = "400";
-                    apiResponse.result = err;
-                    res.send(err);
-                    sql.close();
-                }
-                else {
-                    apiResponse.statuscode = "200";
-                    apiResponse.message = "User Updated Successfully";
-                    apiResponse.result = ""
-                    res.send(apiResponse);
-                    sql.close();
-                }
-            });
+        } else {
+            apiResponse.statuscode = "200";
+            apiResponse.message = "User Updated Successfully";
+            apiResponse.result = results;
+            res.send(apiResponse);
         }
     });
 });
 
 router.post("/updateUserInfo", (req, res) => {
-                    apiResponse.statuscode = "200";
-                    apiResponse.message = "User Updated Successfully";
-                    apiResponse.result = "";
-                    console.log("Api response: ", apiResponse);
-                    let ws = server.Server();
-                    ws.connections.forEach((conn) => conn.send(apiResponse));
-                    res.send(apiResponse);
+    apiResponse.statuscode = "200";
+    apiResponse.message = "User Updated Successfully";
+    apiResponse.result = "";
+    console.log("Api response: ", apiResponse);
+    let ws = server.Server();
+    ws.connections.forEach((conn) => conn.send(apiResponse));
+    res.send(apiResponse);
     // var query = "select * from [Employee]";
     // var query = "UPDATE [Employee] SET OutTime= " + req.body.outTime + " , InTime=  " + req.body.inTime + " , Password= " + req.body.password + "   WHERE Id= " + req.params.id;
-    // sql.connect(dbConfig, (err) => {
-    //     if (err) {
-    //         console.log("Error while connecting database :- " + err);
-    //         apiResponse.message = "Error while connecting database"
-    //         apiResponse.statuscode = "400";
-    //         apiResponse.result = err;
-    //         res.send(apiResponse);
-    //     }
-    //     else {
-    //         var request = new sql.Request();
-    //         request.query(query, function (err, rs) {
-    //             if (err) {
-    //                 apiResponse.message = "Error while querying database";
-    //                 apiResponse.statuscode = "400";
-    //                 apiResponse.result = err;
-    //                 res.send(err);
-    //                 sql.close();
-    //             }
-    //             else {
-    //                 apiResponse.statuscode = "200";
-    //                 apiResponse.message = "User Updated Successfully";
-    //                 apiResponse.result = ""
-    //                 let ws = server.Server();
-    //                 ws.wsServer.on('message', function (message) {
-    //                     connections.forEach((conn) => conn.send(apiResponse))
-    //                 });
-    //                 res.send(apiResponse);
-    //                 sql.close();
-    //             }
-    //         });
-    //     }
-    // });
 });
 
 
