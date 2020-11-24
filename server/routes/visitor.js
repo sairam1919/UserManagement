@@ -109,7 +109,7 @@ router.post("/updateUserInfo", (req,res) => {
     let response = executeQuery(res, query);
     apiResponse.statuscode = "200";
     apiResponse.message = "Successfully Fetched the UserList";
-    apiResponse.result = response.recordset
+    apiResponse.result = result
     res.send(apiResponse);
 });
 

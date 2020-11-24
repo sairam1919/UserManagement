@@ -20,7 +20,6 @@ router.get("/user", (req, res) => {
     connection.query('SELECT * FROM employee', function (error, results, fields) {
         console.log("Inside the connection");
         if (error) {
-            console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
             apiResponse.statuscode = "400";
             apiResponse.result = error;
@@ -38,9 +37,7 @@ router.get("/user", (req, res) => {
 //GET API to Fetch a Specific User Data
 router.get("/user/:id", (req, res) => {
     connection.query('SELECT * FROM employee WHERE UserName=' + req.params.id, function (error, results, fields) {
-        console.log("Inside the connection");
         if (error) {
-            console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
             apiResponse.statuscode = "400";
             apiResponse.result = error;
@@ -58,7 +55,6 @@ router.post("/login", (req, res) => {
     let UserName = req.body.userName;
     let Password = req.body.password;
     connection.query('SELECT * FROM employee WHERE UserName=' + "'" + UserName + "'", function (error, results, fields) {
-        console.log("Inside the connection");
         if (error) {
             console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
@@ -66,11 +62,14 @@ router.post("/login", (req, res) => {
             apiResponse.result = error;
             res.send(apiResponse);
         } else {
-            if (results) {
-
-            } else {
+            if (results.length && results[0].UserName === UserName && results[0].password === Password) {
                 apiResponse.statuscode = "200";
                 apiResponse.message = "User Authenticated Successfully";
+                apiResponse.result = results;
+                res.send(apiResponse);
+            } else {
+                apiResponse.statuscode = "400";
+                apiResponse.message = "Unable to Authenticate the User";
                 apiResponse.result = results;
                 res.send(apiResponse);
             }
@@ -91,9 +90,10 @@ router.post("/user", (req, res) => {
     let userData = req.body.userData;
     let role = req.body.role;
     let password = req.body.password;
-    let UserId = '';
+    let UserID = req.body.UserName + req.body.MobileNumber;
+    let Current_Location = '';
 
-    var query1 = "INSERT INTO employee ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, Password ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'" + " )";
+    var query1 = "INSERT INTO employee ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, password, UserID ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'"+ ",  " + "'" + UserID + "'" + " )";
     connection.query(query1, function (error, results, fields) {
         if (error) {
             console.log("Error while connecting database" + error);
