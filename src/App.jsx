@@ -10,7 +10,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { ViewportProvider } from './_hooks';
-import Dashboard from './containers/dashboard/Dashboard';
+import HomePage from './containers/homePage';
 
 const LoginPage = () => {
   return (
@@ -21,11 +21,11 @@ const LoginPage = () => {
   );
 }
 
-const DashboardPage = () => {
+const LandingPage = () => {
   return (
     <div className="App-container" style={{ height: window.innerHeight, width: window.innerWidth}} >
       <TopNavBar />
-      <Dashboard />
+      <HomePage />
     </div>
   );
 }
@@ -36,7 +36,7 @@ const App = () =>{
     <Router>
     <Switch>
     <Route exact path="/" component={LoginPage} />
-    <Route path="/home"  component={DashboardPage} />
+    <Route path="/home"  component={LandingPage} />
     <Redirect to="/" />
     </Switch>
       </Router>

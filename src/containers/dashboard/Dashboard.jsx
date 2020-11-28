@@ -1,32 +1,34 @@
-import React, { useState } from 'react';
-import Employees from './employees';
-import Visitors from './visitors';
+import React from 'react';
+import {
+    Grid,
+    Container,
+  } from '@material-ui/core';
+  import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+  import ViewWeekIcon from '@material-ui/icons/ViewWeekOutlined';
+  import PersonOutlineIcon from '@material-ui/icons/PersonOutline'; 
+import {MenuCard } from './menuCard';
 
-const Dashboard = () => {
-    const [currentComponent, setCurrentComponent] = useState("employees");
-    const handleClick = (option) => {
-        setCurrentComponent(option);
+class Dashboard  extends React.Component{
+    constructor(props) {
+        super(props);
     }
-    let renderComponent = null;
-    switch (currentComponent) {
-        case "employees":
-            renderComponent = <Employees />;
-            break;
-        case "visitors":
-            renderComponent = <Visitors />;
-            break;
-        default:
-            renderComponent = <Employees />;
-            break;
+     menuClick = (menu) => {
+        this.props.handleMenuClick(menu);
     }
+    render() {
     return (
-        <div className="container-fluid">
-                    <div style ={{ display: 'inline-block'}}>
-      <span className={ currentComponent === 'employees' ? "active-menu" : "nonactive-menu"}><a onClick={()=>handleClick('employees')}>Employees</a></span>
-      <span className={ currentComponent === 'visitors' ? "active-menu" : "nonactive-menu"}><a onClick={() =>handleClick('visitors')}>Visitors</a></span>
-    </div>
-            {renderComponent}
-        </div>
+        <Container maxWidth={false} style={{ padding: '5% 1%', overflow: 'hidden'}}>
+        <Grid
+        container
+        spacing={10}
+      >
+        <MenuCard menuLabel="Employees" menuIcon={<PersonOutlineIcon />} menuClick={() => this.menuClick('employees')} />
+        <MenuCard menuLabel="Visitors" menuIcon={<PeopleIcon />} menuClick={() => this.menuClick('visitors') } />
+        <MenuCard menuLabel="Generate Pass" menuIcon={<ViewWeekIcon />} menuClick={() => this.menuClick('generatepass') } />
+        <MenuCard menuLabel="Create Employee" menuIcon={<ViewWeekIcon />} menuClick={() => this.menuClick('createemployee') } />
+        </Grid>
+        </Container>
     )
+}
 }
 export default Dashboard; 

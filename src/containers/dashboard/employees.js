@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
+import { ArrowBack } from '@material-ui/icons';
 
-const Employees = () => {
+const Employees = ({handleMenuClick}) => {
     const [ searchValue, setSearchValue] = useState('');
     const columns = [
         {
@@ -68,6 +69,7 @@ if(searchValue) {
 
     return (
         <div>
+            <div style={{ margin:'20px', fontSize: 18, fontWeight: 500,  cursor: 'pointer' }} onClick={handleMenuClick}><ArrowBack />{' '}Back</div>
             <div className="active-cyan-4 mb-4" style={{ margin: '20px 20px'}}>
             <input className="form-control mr-3 w-25" type="text" placeholder="Search by first, last and full name" aria-label="Search" onChange={handleSearch}/>
             </div>
