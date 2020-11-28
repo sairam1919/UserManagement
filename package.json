@@ -2,7 +2,8 @@
   "name": "UserManagement",
   "version": "0.1.0",
   "private": false,
-  "homepage": "/UserManagement",
+  "homepage": "/",
+  "proxy": "http://localhost:4000",
   "dependencies": {
     "babel": "^5.8.23",
     "babel-loader": "^5.3.1",

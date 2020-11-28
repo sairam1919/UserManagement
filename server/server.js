@@ -10,7 +10,6 @@ const fs = require("fs");
 // Get our API routes
 const employee = require('./routes/employee');
 const visitor = require('./routes/visitor');
-const { connection } = require('websocket');
 
 const app = express();
 
@@ -26,11 +25,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/employee', employee);
 app.use('/visitor', visitor);
 
-app.use(express.static(path.join(__dirname, "..", "build")));
-app.use(express.static("public"));
+// serve up production assets
+app.use(express.static('client/build'));
 
-app.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+// serve up the index.html if express does'nt recognize the route
+app.get('*', (req, res) => {
+res.sendFile(path.resolve(__dirname, '../', 'build', 'index.html'));
 });
 
 app.get("/fetchConfig", (req, res) => {
@@ -64,7 +64,6 @@ wsServer.on('message', function(message) {
 
 // Once the client disconnects, the `close` handler is called
 wsServer.on('close', () => {
-  // The closed connection is removed from the set
   connections.delete(wsServer)
 })
 

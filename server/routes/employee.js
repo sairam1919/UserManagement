@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const fs = require("fs");
 const server = require("../server");
 const mysql = require('mysql');
 
@@ -16,8 +15,7 @@ let apiResponse = { "message": "", "result": "", "statuscode": "" };
 
 //GET API to Fetch all Users
 router.get("/user", (req, res) => {
-    console.log("Inside the method call");
-    connection.query('SELECT * FROM employee', function (error, results, fields) {
+    connection.query('SELECT * FROM employee,userpassinfo', function (error, results, fields) {
         console.log("Inside the connection");
         if (error) {
             apiResponse.message = "Error while connecting database"
@@ -36,7 +34,8 @@ router.get("/user", (req, res) => {
 
 //GET API to Fetch a Specific User Data
 router.get("/user/:id", (req, res) => {
-    connection.query('SELECT * FROM employee WHERE UserID=' + req.params.id, function (error, results, fields) {
+    var query1 = 'SELECT * FROM employee,userpassinfo WHERE employee.UserID =' + req.params.id
+    connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database"
             apiResponse.statuscode = "400";
@@ -54,7 +53,7 @@ router.get("/user/:id", (req, res) => {
 router.post("/login", (req, res) => {
     let UserName = req.body.userName;
     let Password = req.body.password;
-    connection.query('SELECT * FROM employee WHERE UserName=' + "'" + UserName + "'", function (error, results, fields) {
+    connection.query('SELECT * FROM employee,userpassinfo WHERE employee.UserID=' + "'" + UserName + "'", function (error, results, fields) {
         if (error) {
             console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
@@ -62,7 +61,7 @@ router.post("/login", (req, res) => {
             apiResponse.result = error;
             res.send(apiResponse);
         } else {
-            if (results.length && results[0].UserName === UserName && results[0].password === Password) {
+            if (results.length && results[0].UserID === UserName && results[0].password === Password) {
                 apiResponse.statuscode = "200";
                 apiResponse.message = "User Authenticated Successfully";
                 apiResponse.result = results;
@@ -92,14 +91,14 @@ router.post("/user", (req, res) => {
     let password = req.body.password;
     let UserID = req.body.UserName + req.body.MobileNumber;
     let Current_Location = '';
-    let userPass = '';
+    let userPass = req.body.userPass;
     let userImage = req.body.userImage;
     let userIdProof = req.body.userIdProof;
     let userIdProofNumber = req.body.userIdProofNumber;
     let userPassImage = req.body.userPassImage;
     let expiryDate = req.body.expiryDate;
 
-    var query1 = "INSERT INTO employee ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, password, UserID, Current_Location ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'"+ ",  " + "'" + UserID + "'"  + ",  " + "'" + Current_Location + "'" + " )";
+    var query1 = "INSERT INTO employee ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, password, UserID, Current_Location ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'" + ",  " + "'" + UserID + "'" + ",  " + "'" + Current_Location + "'" + " )";
     connection.query(query1, function (error, results, fields) {
         if (error) {
             console.log("Error while connecting database" + error);
@@ -115,7 +114,7 @@ router.post("/user", (req, res) => {
         }
     });
 
-    var query2 = "INSERT INTO userpassinfo ( UserPass, UserID, UserImage, UserIDProof, UserName, UserIDProofNumber, PassImage, ExpairyDate) VALUES (" + "'" + userPass + "'"+ "'" + UserID + "'"+ "'" + userImage + "'"+ "'" + userIdProof + "'"+ "'" + username + "'"+ "'" + userIdProofNumber + "'"+ "'" + userPassImage + "'"+ "'" + expiryDate + "'" + " )";
+    var query2 = "INSERT INTO userpassinfo ( UserPass, UserID, UserImage, UserIDProof, UserName, UserIDProofNumber, PassImage, ExpairyDate) VALUES (" + "'" + userPass + "'" + "'" + UserID + "'" + "'" + userImage + "'" + "'" + userIdProof + "'" + "'" + username + "'" + "'" + userIdProofNumber + "'" + "'" + userPassImage + "'" + "'" + expiryDate + "'" + " )";
     connection.query(query2, function (error, results, fields) {
         console.log("Inside the connection");
         if (error) {
@@ -136,7 +135,7 @@ router.post("/user", (req, res) => {
 //PUT API
 router.put("/user/:id", (req, res) => {
     console.log("Request Received for the Update User");
-    var query1 = "UPDATE [Employee] SET OutTime= " + req.body.outTime + " , InTime=  " + req.body.inTime + " , Password= " + req.body.password + "   WHERE Id= " + req.params.id;
+    var query1 = "UPDATE employee SET OutTime= " + req.body.outTime + " , InTime=  " + req.body.inTime + " , Password= " + req.body.password + "   WHERE Id= " + req.params.id;
     connection.query(query1, function (error, results, fields) {
         console.log("Inside the connection");
         if (error) {
@@ -155,15 +154,23 @@ router.put("/user/:id", (req, res) => {
 });
 
 router.post("/updateUserInfo", (req, res) => {
-    apiResponse.statuscode = "200";
-    apiResponse.message = "User Updated Successfully";
-    apiResponse.result = "";
-    console.log("Api response: ", apiResponse);
-    let ws = server.Server();
-    ws.connections.forEach((conn) => conn.send(apiResponse));
-    res.send(apiResponse);
-    // var query = "select * from [Employee]";
-    // var query = "UPDATE [Employee] SET OutTime= " + req.body.outTime + " , InTime=  " + req.body.inTime + " , Password= " + req.body.password + "   WHERE Id= " + req.params.id;
+    var query1 = "UPDATE employee SET OutTime= " + req.body.outTime + " , InTime=  " + req.body.inTime + " , Password= " + req.body.password + "   WHERE Id= " + req.params.id;
+    connection.query(query1, function (error, results, fields) {
+        if (error) {
+            console.log("Error while connecting database" + error);
+            apiResponse.message = "Error while connecting database"
+            apiResponse.statuscode = "400";
+            apiResponse.result = error;
+            res.send(apiResponse);
+        } else {
+            apiResponse.statuscode = "200";
+            apiResponse.message = "User Updated Successfully";
+            apiResponse.result = results;
+            let ws = server.Server();
+            ws.connections.forEach((conn) => conn.send(apiResponse));
+            res.send(apiResponse);
+        }
+    });
 });
 
 

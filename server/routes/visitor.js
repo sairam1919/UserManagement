@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
+const server = require("../server");
 
 //Initialling connection string
 var connection = mysql.createConnection({
@@ -16,7 +17,7 @@ let apiResponse = { "message": "", "result": "", "statuscode": "" };
 //GET API to Fetch all Users
 router.get("/user", (req, res) => {
     console.log("Inside the method call");
-    connection.query('SELECT * FROM employee', function (error, results, fields) {
+    connection.query('SELECT * FROM visitor,userpassinfo', function (error, results, fields) {
         console.log("Inside the connection");
         if (error) {
             console.log("Error while connecting database" + error);
@@ -36,7 +37,7 @@ router.get("/user", (req, res) => {
 
 //GET API to Fetch a Specific User Data
 router.get("/user/:id", (req, res) => {
-    connection.query('SELECT * FROM employee WHERE UserID=' + req.params.id, function (error, results, fields) {
+    connection.query('SELECT * FROM visitor,userpassinfo WHERE visitor.UserID=' + req.params.id, function (error, results, fields) {
         console.log("Inside the connection");
         if (error) {
             console.log("Error while connecting database" + error);
@@ -128,12 +129,24 @@ router.put("/user/:id", (req, res) => {
 });
 
 router.post("/updateUserInfo", (req,res) => {
-    var query = "select * from visitor";
-    let response = executeQuery(res, query);
-    apiResponse.statuscode = "200";
-    apiResponse.message = "Successfully Fetched the UserList";
-    apiResponse.result = result
-    res.send(apiResponse);
+    var query1 = "UPDATE visitor SET OutTime= " + req.body.outTime + " , InTime=  " + req.body.inTime + " , Password= " + req.body.password + "   WHERE Id= " + req.params.id;
+    connection.query(query1, function (error, results, fields) {
+        console.log("Inside the connection");
+        if (error) {
+            console.log("Error while connecting database" + error);
+            apiResponse.message = "Error while connecting database"
+            apiResponse.statuscode = "400";
+            apiResponse.result = error;
+            res.send(apiResponse);
+        } else {
+            apiResponse.statuscode = "200";
+            apiResponse.message = "User Updated Successfully";
+            apiResponse.result = results;
+            let ws = server.Server();
+            ws.connections.forEach((conn) => conn.send(apiResponse));
+            res.send(apiResponse);
+        }
+    });
 });
 
 
