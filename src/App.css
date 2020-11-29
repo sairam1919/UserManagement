@@ -56,3 +56,9 @@
 .MuiSvgIcon-root {
   font-size: 2.5rem !important;
 }
+
+.react-html5-camera-photo>img, .react-html5-camera-photo>video {
+  width: 400px !important;
+  height: 300px;
+  padding: 10px;
+}
