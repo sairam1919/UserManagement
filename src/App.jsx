@@ -24,7 +24,7 @@ const LoginPage = () => {
 const LandingPage = () => {
   return (
     <div className="App-container" style={{ height: window.innerHeight, width: window.innerWidth}} >
-      <TopNavBar />
+      <TopNavBar showLogOut/>
       <HomePage />
     </div>
   );
