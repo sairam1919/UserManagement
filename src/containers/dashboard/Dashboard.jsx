@@ -1,32 +1,64 @@
-import React, { useState } from 'react';
-import Employees from './employees';
-import Visitors from './visitors';
+import React from 'react';
+import {
+  Grid,
+  Container,
+} from '@material-ui/core';
+import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import { MenuCard } from './menuCard';
+import GenerateVisitorPass from './generateVisitorPass';
+import EditEmployee from './editEmployee';
+import ChangePassword from './changePassword';
+class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGeneratePassOpen: false,
+      isAddEmployee: false,
+      isChangePassword: false,
+    };
+  }
+  menuClick = (menu) => {
+    this.props.handleMenuClick(menu);
+  }
+  generatePass = () => {
+    this.setState({ isGeneratePassOpen: true })
+  }
 
-const Dashboard = () => {
-    const [currentComponent, setCurrentComponent] = useState("employees");
-    const handleClick = (option) => {
-        setCurrentComponent(option);
-    }
-    let renderComponent = null;
-    switch (currentComponent) {
-        case "employees":
-            renderComponent = <Employees />;
-            break;
-        case "visitors":
-            renderComponent = <Visitors />;
-            break;
-        default:
-            renderComponent = <Employees />;
-            break;
-    }
+  handleClose = () => {
+    this.setState({ isGeneratePassOpen: false, isAddEmployee: false, isChangePassword: false })
+  }
+
+  handleAddEmployee = () => {
+    this.setState({ isAddEmployee: true })
+
+  }
+  handleChangePassword = () => {
+    this.setState({ isChangePassword: true })
+  }
+  render() {
     return (
-        <div className="container-fluid">
-                    <div style ={{ display: 'inline-block'}}>
-      <span className={ currentComponent === 'employees' ? "active-menu" : "nonactive-menu"}><a onClick={()=>handleClick('employees')}>Employees</a></span>
-      <span className={ currentComponent === 'visitors' ? "active-menu" : "nonactive-menu"}><a onClick={() =>handleClick('visitors')}>Visitors</a></span>
-    </div>
-            {renderComponent}
-        </div>
+      <Container maxWidth={false} style={{ padding: '5% 1%', overflow: 'hidden' }}>
+        {this.state.isGeneratePassOpen ? < GenerateVisitorPass isOpen={this.state.isGeneratePassOpen} handleClose={() => this.handleClose()} /> : null}
+        {this.state.isAddEmployee ? < EditEmployee isOpen={this.state.isAddEmployee} handleClose={() => this.handleClose()} /> : null}
+        {this.state.isChangePassword ? < ChangePassword isOpen={this.state.isChangePassword} handleClose={() => this.handleClose()} /> : null}
+
+        <Grid
+          container
+          spacing={10}
+        >
+          <MenuCard menuLabel="Employees" menuIcon={<PersonOutlineIcon />} menuClick={() => this.menuClick('employees')} />
+          <MenuCard menuLabel="Visitors" menuIcon={<PeopleIcon />} menuClick={() => this.menuClick('visitors')} />
+          <MenuCard menuLabel="Generate Pass" menuIcon={<ContactMailIcon />} menuClick={() => this.generatePass()} />
+          <MenuCard menuLabel="Create Employee" menuIcon={<PersonAddIcon />} menuClick={() => this.handleAddEmployee()} />
+          <MenuCard menuLabel="Change Password" menuIcon={<VpnKeyIcon />} menuClick={() => this.handleChangePassword()} />
+
+        </Grid>
+      </Container>
     )
+  }
 }
 export default Dashboard; 

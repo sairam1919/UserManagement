@@ -5,6 +5,8 @@
   "homepage": "/",
   "proxy": "http://localhost:4000",
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "babel": "^5.8.23",
     "babel-loader": "^5.3.1",
     "bootstrap": "^4.0.0-beta.2",
