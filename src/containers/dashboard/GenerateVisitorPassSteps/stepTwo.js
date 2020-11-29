@@ -6,11 +6,11 @@ import React, { useState} from 'react';
 import {CapturePhoto, WebcamCapture } from '../CapturePhoto/capturePhoto'
 
 const StepTwo = ({handleGeneratePass}) => {
-    // const [ userPhotoUrl, setUserPhotoUrl] = useState('');
+    const [ userPhotoUrl, setUserPhotoUrl] = useState('');
     // const [ idProofPhotoUrl, setIdProofPhotoUrl] = useState('');
-    // const handleUserPhotoCapture = (dataUrl) => {
-    //     setUserPhotoUrl(dataUrl);
-    // }
+    const handleUserPhotoCapture = (dataUrl) => {
+        setUserPhotoUrl(dataUrl);
+    }
 
     // const handleIdProofPhotoCapture = (dataUrl) => {
     //     setIdProofPhotoUrl(dataUrl);
@@ -19,8 +19,8 @@ const StepTwo = ({handleGeneratePass}) => {
         <div style={{ width: 650, overflo: "hidden" }}>
             <DialogContent >
                 <DialogContentText>
-                   {/* <CapturePhoto dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture}/> */}
-                   <WebcamCapture />
+                   <CapturePhoto dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture}/>
+                   {/* <WebcamCapture /> */}
                    {/* <CapturePhoto dataUrl={idProofPhotoUrl} handleCapture={handleIdProofPhotoCapture}/> */}
                 </DialogContentText>
             </DialogContent>
