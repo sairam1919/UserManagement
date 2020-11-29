@@ -16,8 +16,7 @@ let apiResponse = { "message": "", "result": "", "statuscode": "" };
 
 //GET API to Fetch all Users
 router.get("/user", (req, res) => {
-    console.log("Inside the method call");
-    connection.query('SELECT * FROM visitor,userpassinfo', function (error, results, fields) {
+    connection.query('SELECT * FROM visitor,userpassinfo WHERE visitor.UserID = userpassinfo.UserID', function (error, results, fields) {
         console.log("Inside the connection");
         if (error) {
             console.log("Error while connecting database" + error);
@@ -26,7 +25,6 @@ router.get("/user", (req, res) => {
             apiResponse.result = error;
             res.send(apiResponse);
         } else {
-            console.log("Inside the connection2", results);
             apiResponse.statuscode = "200";
             apiResponse.message = "Successfully Fetched the UserDetails";
             apiResponse.result = results;

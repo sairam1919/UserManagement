@@ -15,7 +15,7 @@ let apiResponse = { "message": "", "result": "", "statuscode": "" };
 
 //GET API to Fetch all Users
 router.get("/user", (req, res) => {
-    connection.query('SELECT * FROM employee,userpassinfo', function (error, results, fields) {
+    connection.query('SELECT * FROM employee,userpassinfo WHERE employee.UserID = userpassinfo.UserID', function (error, results, fields) {
         console.log("Inside the connection");
         if (error) {
             apiResponse.message = "Error while connecting database"
@@ -53,6 +53,7 @@ router.get("/user/:id", (req, res) => {
 router.post("/login", (req, res) => {
     let UserName = req.body.userName;
     let Password = req.body.password;
+    console.log("Input Values", UserName, Password);
     connection.query('SELECT * FROM employee,userpassinfo WHERE employee.UserID=' + "'" + UserName + "'", function (error, results, fields) {
         if (error) {
             console.log("Error while connecting database" + error);
