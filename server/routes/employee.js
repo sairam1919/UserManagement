@@ -62,7 +62,7 @@ router.post("/login", (req, res) => {
             apiResponse.result = error;
             res.send(apiResponse);
         } else {
-            if (results.length && results[0].UserID === UserName && results[0].password === Password) {
+            if (results.length && results[0].UserName === UserName && results[0].password === Password) {
                 apiResponse.statuscode = "200";
                 apiResponse.message = "User Authenticated Successfully";
                 apiResponse.result = results;
@@ -101,7 +101,7 @@ router.post("/user", (req, res) => {
     let first_name = req.body.first_name;
     let last_name = req.body.last_name;
 
-    var query1 = "INSERT INTO employee ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, password, UserID, Current_Location, first_name, last_name ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'" + ",  " + "'" + UserID + "'" + ",  " + "'" + Current_Location + "'" + ", " + "'" + fist_name + "'" + " , " + "'" + last_name + "'" + " )";
+    var query1 = "INSERT INTO employee ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, password, UserID, Current_Location, first_name, last_name ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'" + ",  " + "'" + UserID + "'" + ",  " + "'" + Current_Location + "'" + ", " + "'" + first_name + "'" + " , " + "'" + last_name + "'" + " )";
     connection.query(query1, function (error, results, fields) {
         if (error) {
             console.log("Error while connecting database" + error);

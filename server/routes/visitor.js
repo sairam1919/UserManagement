@@ -36,7 +36,6 @@ router.get("/user", (req, res) => {
 //GET API to Fetch a Specific User Data
 router.get("/user/:id", (req, res) => {
     connection.query('SELECT * FROM visitor,userpassinfo WHERE visitor.UserID=' + req.params.id, function (error, results, fields) {
-        console.log("Inside the connection");
         if (error) {
             console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
