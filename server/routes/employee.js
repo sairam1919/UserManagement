@@ -34,7 +34,7 @@ router.get("/user", (req, res) => {
 
 //GET API to Fetch a Specific User Data
 router.get("/user/:id", (req, res) => {
-    var query1 = 'SELECT * FROM employee,userpassinfo WHERE employee.UserID =' + req.params.id
+    var query1 = 'SELECT * FROM employee,userpassinfo WHERE employee.UserID=' + "'" + req.body.userName + "'";
     connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database"
@@ -169,6 +169,42 @@ router.post("/updateUserInfo", (req, res) => {
             apiResponse.result = results;
             let ws = server.Server();
             ws.connections.forEach((conn) => conn.send(apiResponse));
+            res.send(apiResponse);
+        }
+    });
+});
+
+//PUT API
+router.put("/user/changePassword/:id", (req, res) => {
+    var query1 = 'SELECT * FROM employee,userpassinfo WHERE employee.UserID=' + "'" + req.body.userName + "'";
+    connection.query(query1, function (error, results, fields) {
+        if (error) {
+            apiResponse.message = "Error while connecting database"
+            apiResponse.statuscode = "400";
+            apiResponse.result = error;
+            res.send(apiResponse);
+        } else {
+            if(! (results[0].password === req.body.oldPassword) ) {
+                apiResponse.statuscode = "404";
+                apiResponse.message = "Password Does Not Match..!";
+                apiResponse.result = '';
+                res.send(apiResponse);
+            }
+        }
+    });
+    var query1 = "UPDATE employee SET password= " + req.body.newPassword + "WHERE Id= " + req.params.id;
+    connection.query(query1, function (error, results, fields) {
+        console.log("Inside the connection");
+        if (error) {
+            console.log("Error while connecting database" + error);
+            apiResponse.message = "Error while connecting database"
+            apiResponse.statuscode = "400";
+            apiResponse.result = error;
+            res.send(apiResponse);
+        } else {
+            apiResponse.statuscode = "200";
+            apiResponse.message = "Password Updated Successfully";
+            apiResponse.result = results;
             res.send(apiResponse);
         }
     });
