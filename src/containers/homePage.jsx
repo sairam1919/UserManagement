@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Employees from './dashboard/employees';
 import Visitors from './dashboard/visitors';
-import Dashboard from './dashboard/dashboard'
+import Dashboard from './dashboard/Dashboard'
 
 const HomePage = () => {
     const [currentComponent,setCurrentComponent] = useState('dashboard');

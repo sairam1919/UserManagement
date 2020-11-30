@@ -1,4 +1,4 @@
-CREATE DATABASE `usermanagement` /*!40CREATE TABLE `employee` (
+CREATE TABLE `employee` (
   `Id` bigint NOT NULL,
   `UserName` varchar(255) NOT NULL,
   `MobileNo` varchar(50) NOT NULL,
@@ -13,6 +13,7 @@ CREATE DATABASE `usermanagement` /*!40CREATE TABLE `employee` (
   `password` varchar(50) NOT NULL,
   `Current_Location` varchar(50) DEFAULT NULL,
   `UserID` varchar(50) NOT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;

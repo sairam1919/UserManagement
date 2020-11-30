@@ -8,7 +8,26 @@ import { FormControl , Select, MenuItem, InputLabel, TextField, Button} from '@m
 import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 
- const ChangePassword = ({ isOpen, handleClose }) => {
+ const ChangePassword = ({ isOpen, handlePasswordUpdate, handleClose }) => {
+  const [values, setValues] = useState({
+   newPassword: '',
+   oldPassword: '',
+   newPassword1: '',
+  });
+
+  const handleChange = (event) => {
+    setValues({...values, [event.target.name]: event.target.value });
+  }
+
+  const handlePasswordUpdateChange = () => {
+    if(values.newPassword === values.newPassword1) {
+      let bdy = { "oldPassword": values.oldPassword, "newPassword": values.newPassword };
+      handlePasswordUpdate(bdy);
+    } else {
+      alert("New password Doesn't match..!");
+    }  
+  };
+
   return (
     <Dialog open={isOpen}>
       <DialogTitle style={{ backgroundColor: 'rgb(54, 65, 83)', color: 'white', fontWeight: 500 }}>
@@ -28,6 +47,8 @@ import CloseIcon from '@material-ui/icons/Close';
               shrink: true,
             }}
             variant="outlined"
+            name = "oldPassword"
+            onChange = {handleChange}
           />
           <TextField
             label="Enter Your New Password"
@@ -38,6 +59,8 @@ import CloseIcon from '@material-ui/icons/Close';
               shrink: true,
             }}
             variant="outlined"
+            name = "newPassword"
+            onChange = {handleChange}
           />
           <TextField
             label="Re-Enter Your New Password"
@@ -48,11 +71,13 @@ import CloseIcon from '@material-ui/icons/Close';
               shrink: true,
             }}
             variant="outlined"
+            name = "newPassword1"
+            onChange = {handleChange}
           />
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-            <Button style={{ backgroundColor: 'green', color: 'white' }} variant="contained" onClick={handleClose}> Update Password </Button>
+            <Button style={{ backgroundColor: 'green', color: 'white' }} variant="contained" onClick={handlePasswordUpdateChange}> Update Password </Button>
        </DialogActions>
     </Dialog>
   );

@@ -11,5 +11,7 @@ CREATE TABLE `visitor` (
   `UserData` text NOT NULL,
   `Current_Location` varchar(50) DEFAULT NULL,
   `UserID` varchar(50) NOT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

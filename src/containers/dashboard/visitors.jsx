@@ -2,6 +2,26 @@ import React, {useState} from 'react';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { ArrowBack } from '@material-ui/icons';
+import Constants from '../../Constants';
+
+let rows = [];
+var url = Constants.FETCH_ALL_VISITORS;
+fetch(url, {
+  method: "GET",
+  headers: {
+    "Content-Type": "application/json"
+  }
+}).then(res => {
+  if (res.status === 200) {
+    return res.json();
+  } else {
+    this.setState({ isError: true, errorMessage: "Unknown Error Occurred." });
+  }
+}).then(data => {
+  if (data) {
+    rows = data.result;
+  }
+});
 
 const Visitors = ({handleMenuClick}) => {
   const [ searchValue, setSearchValue] = useState('');
@@ -18,53 +38,20 @@ const Visitors = ({handleMenuClick}) => {
 
           },
           {
-            dataField: 'id_number',
+            dataField: 'UserID',
             text: 'ID Number',
             sort: true,
           },
           {
-            dataField: 'validity',
+            dataField: 'ExpairyDate',
             text: 'Validity',
             sort: true,
           },
           {
-            dataField: 'current_location',
+            dataField: 'Current_Location',
             text: 'Current Location',
             sort: true,
           },
-    ];
-
-        let rows= [{
-            first_name: "Arthur",
-            last_name: "Hawkins",
-            id_number: 43756,
-            validity: "03/21/2019 06.27 PM",
-            current_location: "building 1"
-        },
-        {
-            first_name: "Colleen",
-            last_name: "Warren",
-            id_number: 22739,
-            validity: "02/27/2019 04.38 PM",
-            current_location: "building 3"
-    
-        },
-        {
-            first_name: "Colleen",
-            last_name: "Lane",
-            id_number: 70668,
-            validity: "02/23/2019 02.38 PM",
-            current_location: "building 1"
-    
-        },
-        {
-            first_name: "Angel",
-            last_name: "Richards",
-            id_number: 97174,
-            validity: "10/08/2019 05.38 PM",
-            current_location: "building 2"
-    
-        },
     ];
 
     if(searchValue) {

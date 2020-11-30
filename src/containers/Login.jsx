@@ -1,5 +1,6 @@
 import React, { useState} from 'react';
 import { useHistory} from 'react-router-dom';
+import Constants from '../Constants';
 
 const Login = () => {
   const history = useHistory ();
@@ -17,31 +18,213 @@ const Login = () => {
   }
 
   const handleLogin = () => {
-    history.push("/home");
-    // var url = Constants.FETCH_Login_INFO;
-    // let bdy = {"userName":this.state.userName,"password":this.state.password};
-    // fetch(url, {
-    //   method: "POST",
-    //   body: JSON.stringify(bdy),
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // }).then(res => {
-    //   if (res.status === 200) {
-    //     return res.json();
-    //   } else {
-    //     this.setState({ isError: true, errorMessage: "Unknown Error Occured." });
-    //   }
-    // }).then(data => {
-    //   if (data && data.recordset.length) {
-    //     if (data.recordset[0].UserName === this.state.userName && data.recordset[0].password === this.state.password) {
-    //       this.setState({ userData: data.recordset[0], isUserLoggedIn: true });
-    //     } else {
-    //       this.setState({ isError: true, errorMessage: "Please Enter Valid User Credentials." });
-    //     }
-
-    //   }
-    // });
+    var url = Constants.FETCH_Login_INFO;
+    let bdy = {...values, "userName":values.userName,"password":values.password};
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(bdy),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json();
+      } else {
+        this.setState({ isError: true, errorMessage: "Unknown Error Occurred." });
+      }
+    }).then(data => {
+    //   {
+    //     "message": "User Authenticated Successfully",
+    //     "result": [
+    //         {
+    //             "Id": 1,
+    //             "UserName": "TestUser",
+    //             "MobileNo": "9948331372",
+    //             "IssuedBy": "parvez",
+    //             "IssuedDateTime": "11-23-2020",
+    //             "Zone": "Zone2",
+    //             "Tower": "Tower2",
+    //             "InTime": "",
+    //             "OutTime": "",
+    //             "UserData": "{}",
+    //             "Role": "Admin",
+    //             "password": "password",
+    //             "Current_Location": "Zone1, Tower 1",
+    //             "UserID": "Test@9948331372",
+    //             "UserPass": "Test9948",
+    //             "UserImage": {
+    //                 "type": "Buffer",
+    //                 "data": [
+    //                     49,
+    //                     48,
+    //                     48,
+    //                     49,
+    //                     48,
+    //                     48,
+    //                     49,
+    //                     48,
+    //                     49,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0
+    //                 ]
+    //             },
+    //             "UserIDProof": {
+    //                 "type": "Buffer",
+    //                 "data": [
+    //                     49,
+    //                     48,
+    //                     48,
+    //                     49,
+    //                     48,
+    //                     48,
+    //                     49,
+    //                     48,
+    //                     49,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0
+    //                 ]
+    //             },
+    //             "UserIDProofNumber": "100100101",
+    //             "PassImage": {
+    //                 "type": "Buffer",
+    //                 "data": [
+    //                     49,
+    //                     48,
+    //                     48,
+    //                     49,
+    //                     48,
+    //                     48,
+    //                     49,
+    //                     48,
+    //                     49,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0,
+    //                     0
+    //                 ]
+    //             },
+    //             "ExpairyDate": "26-11-2020"
+    //         }
+    //     ],
+    //     "statuscode": "200"
+    // }
+      history.push("/home");
+    });
 
   }
 
