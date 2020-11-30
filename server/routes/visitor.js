@@ -71,7 +71,10 @@ router.post("/user", (req, res) => {
     let userIdProofNumber = req.body.userIdProofNumber;
     let userPassImage = req.body.userPassImage;
     let expiryDate = req.body.expiryDate;
-    var query1 = "INSERT INTO visitor ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, Password,Current_Location ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'" + "'" + Current_Location + "'" + " )";
+    let first_name = req.body.first_name;
+    let last_name = req.body.last_name;
+
+    var query1 = "INSERT INTO visitor ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, password, UserID, Current_Location, first_name, last_name ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'" + ",  " + "'" + UserID + "'" + ",  " + "'" + Current_Location + "'" + ", " + "'" + fist_name + "'" + " , " + "'" + last_name + "'" + " )";
     connection.query(query1, function (error, results, fields) {
         if (error) {
             console.log("Error while connecting database" + error);
@@ -87,7 +90,7 @@ router.post("/user", (req, res) => {
         }
     });
 
-    var query2 = "INSERT INTO userpassinfo ( UserPass, UserID, UserImage, UserIDProof, UserName, UserIDProofNumber, PassImage, ExpairyDate) VALUES (" + "'" + userPass + "'"+ "'" + UserID + "'"+ "'" + userImage + "'"+ "'" + userIdProof + "'"+ "'" + username + "'"+ "'" + userIdProofNumber + "'"+ "'" + userPassImage + "'"+ "'" + expiryDate + "'" + " )";
+    var query2 = "INSERT INTO userpassinfo ( UserPass, UserID, UserImage, UserIDProof, UserName, UserIDProofNumber, PassImage, ExpairyDate) VALUES (" + "'" + userPass + "'" + "'" + UserID + "'" + "'" + userImage + "'" + "'" + userIdProof + "'" + "'" + username + "'" + "'" + userIdProofNumber + "'" + "'" + userPassImage + "'" + "'" + expiryDate + "'" + " )";
     connection.query(query2, function (error, results, fields) {
         console.log("Inside the connection");
         if (error) {
@@ -126,7 +129,7 @@ router.put("/user/:id", (req, res) => {
     });
 });
 
-router.post("/updateUserInfo", (req,res) => {
+router.post("/updateUserInfo", (req, res) => {
     var query1 = "UPDATE visitor SET OutTime= " + req.body.outTime + " , InTime=  " + req.body.inTime + " , Password= " + req.body.password + "   WHERE Id= " + req.params.id;
     connection.query(query1, function (error, results, fields) {
         console.log("Inside the connection");

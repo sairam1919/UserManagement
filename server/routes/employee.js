@@ -98,8 +98,10 @@ router.post("/user", (req, res) => {
     let userIdProofNumber = req.body.userIdProofNumber;
     let userPassImage = req.body.userPassImage;
     let expiryDate = req.body.expiryDate;
+    let first_name = req.body.first_name;
+    let last_name = req.body.last_name;
 
-    var query1 = "INSERT INTO employee ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, password, UserID, Current_Location ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'" + ",  " + "'" + UserID + "'" + ",  " + "'" + Current_Location + "'" + " )";
+    var query1 = "INSERT INTO employee ( ID, UserName, MobileNo, IssuedBy, IssuedDateTime, Zone, Tower, InTime, OutTime, UserData, Role, password, UserID, Current_Location, first_name, last_name ) VALUES (  '1' ," + "'" + username + "'" + ",  " + "'" + mobilenumber + "'" + ", " + "'" + issuedBy + "'" + ", " + "'" + issuedDateTime + "'" + ",  " + "'" + zone + "'" + ",  " + "'" + tower + "'" + ",  " + "'" + inTime + "'" + ",  " + "'" + outTime + "'" + ",  " + "'" + userData + "'" + ",  " + "'" + role + "'" + ",  " + "'" + password + "'" + ",  " + "'" + UserID + "'" + ",  " + "'" + Current_Location + "'" + ", " + "'" + fist_name + "'" + " , " + "'" + last_name + "'" + " )";
     connection.query(query1, function (error, results, fields) {
         if (error) {
             console.log("Error while connecting database" + error);
@@ -176,7 +178,7 @@ router.post("/updateUserInfo", (req, res) => {
 
 //PUT API
 router.put("/user/changePassword/:id", (req, res) => {
-    var query1 = 'SELECT * FROM employee,userpassinfo WHERE employee.UserID=' + "'" + req.body.userName + "'";
+    var query1 = 'SELECT * FROM employee,userpassinfo WHERE employee.UserID=' + "'" + req.params.id + "'";
     connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database"
@@ -184,7 +186,7 @@ router.put("/user/changePassword/:id", (req, res) => {
             apiResponse.result = error;
             res.send(apiResponse);
         } else {
-            if(! (results[0].password === req.body.oldPassword) ) {
+            if (!(results[0].password === req.body.oldPassword)) {
                 apiResponse.statuscode = "404";
                 apiResponse.message = "Password Does Not Match..!";
                 apiResponse.result = '';
@@ -192,9 +194,8 @@ router.put("/user/changePassword/:id", (req, res) => {
             }
         }
     });
-    var query1 = "UPDATE employee SET password= " + req.body.newPassword + "WHERE Id= " + req.params.id;
-    connection.query(query1, function (error, results, fields) {
-        console.log("Inside the connection");
+    var query2 = "UPDATE employee SET password= " + "'" + req.body.newPassword + "'" + " WHERE employee.UserID=" + "'" + req.params.id + "'";
+    connection.query(query2, function (error, results, fields) {
         if (error) {
             console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database"
