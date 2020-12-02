@@ -3,6 +3,10 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { ArrowBack } from '@material-ui/icons';
 import Constants from '../../Constants';
+import EditAccessRemove from './editAccessRemove';
+import { Button } from '@material-ui/core';
+import { Edit } from '@material-ui/icons';
+
 
 let rows = [];
 var url = Constants.FETCH_ALL_VISITORS;
@@ -25,6 +29,24 @@ fetch(url, {
 
 const Visitors = ({handleMenuClick}) => {
   const [ searchValue, setSearchValue] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [visitData, setVisitData] = useState({})
+  const handleClose  =() => {
+    setIsOpen(false);
+
+  }
+  const linkFollow = (cell, row, rowIndex, formatExtraData) => {
+    return (
+      <Button
+        onClick={() => {
+          setVisitData(row);
+          setIsOpen(true);
+        }}
+      >
+        <Edit />
+      </Button>
+    );
+  };
     const columns = [
         {
             dataField: 'first_name',
@@ -52,6 +74,11 @@ const Visitors = ({handleMenuClick}) => {
             text: 'Current Location',
             sort: true,
           },
+          {
+            dataField: "AccessRemove",
+            text: "Access / Remove",
+            formatter: (cell, row, rowIndex, formatExtraData) => linkFollow(cell, row, rowIndex, formatExtraData),
+          }
     ];
 
     if(searchValue) {
@@ -64,8 +91,12 @@ const Visitors = ({handleMenuClick}) => {
 }
     return (
         <div>
-                      <div style={{ margin:'20px', fontSize: 18, fontWeight: 500,  cursor: 'pointer' }} onClick={handleMenuClick}><ArrowBack />{' '}Back</div>
-
+          {isOpen ?
+        <EditAccessRemove isOpen={isOpen} visitData={visitData} handleClose={handleClose} />
+        :
+        null
+      }
+            <div style={{ margin:'20px', fontSize: 18, fontWeight: 500,  cursor: 'pointer' }} onClick={handleMenuClick}><ArrowBack />{' '}Back</div>
             <div className="active-cyan-4 mb-4" style={{ margin: '20px 20px'}}>
             <input className="form-control mr-3 w-25" type="text" placeholder="Search by id, first and last Name" aria-label="Search" onChange={handleSearch}/>
             </div>

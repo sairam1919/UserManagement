@@ -9,16 +9,20 @@ import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 import StepOne from './GenerateVisitorPassSteps/stepOne';
 import StepTwo from './GenerateVisitorPassSteps/stepTwo';
+import StepSuccess  from './GenerateVisitorPassSteps/stepSuccess';
 
 const GenerateVisitorPass = ({isOpen, handleClose}) => {
     const [ step, setStep] = useState(1);
+    const [data, setData] = useState();
 
     const handleNext = () => {
         setStep(2);
     }
 
-    const handleGeneratePass = () => {
-        handleClose();
+    const handleGeneratePass = (dataUrl) => {
+      setStep(3)
+      setData(dataUrl);
+        // handleClose();
     }
     let renderComponent = null;
     switch(step) {
@@ -27,6 +31,13 @@ const GenerateVisitorPass = ({isOpen, handleClose}) => {
             break;
         case 2:
             renderComponent = <StepTwo handleGeneratePass={handleGeneratePass} />
+            break;
+        case 3:
+          renderComponent =<StepSuccess data={data}  handleClose={handleClose}/>
+          break;
+          default: 
+          renderComponent = <StepOne handleNext={handleNext} />
+            break;
     }
 
     

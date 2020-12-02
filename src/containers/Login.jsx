@@ -1,8 +1,8 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import { useHistory} from 'react-router-dom';
 import Constants from '../Constants';
 
-const Login = () => {
+const Login = (props) => {
   const history = useHistory ();
   const [values, setValues] = useState({
     userName: "",
@@ -12,6 +12,10 @@ const Login = () => {
     isError: false,
     isUserLoggedIn: false
   });
+
+  useEffect(() => {
+        localStorage.clear();
+  },[]);
 
   const handleChange = (event) => {
     setValues({...values, [event.target.name]: event.target.value });
@@ -33,6 +37,31 @@ const Login = () => {
         this.setState({ isError: true, errorMessage: "Unknown Error Occurred." });
       }
     }).then(data => {
+
+        data = 
+        {
+              "message": "User Authenticated Successfully",
+              "result": [
+                  {
+                      "Id": 1,
+                      "UserName": "TestUser",
+                      "MobileNo": "9948331372",
+                      "IssuedBy": "parvez",
+                      "IssuedDateTime": "11-23-2020",
+                      "Zone": "Zone2",
+                      "Tower": "Tower2",
+                      "InTime": "",
+                      "OutTime": "",
+                      "UserData": "{}",
+                      "Role": "Admin",
+                      "password": "password",
+                      "Current_Location": "Zone1, Tower 1",
+                      "UserID": "Test@9948331372",
+                      "UserPass": "Test9948",
+                  }
+                ]};
+
+                localStorage.setItem('userDetails', data);
     //   {
     //     "message": "User Authenticated Successfully",
     //     "result": [

@@ -22,9 +22,11 @@ const LoginPage = () => {
 }
 
 const LandingPage = () => {
+
+  const userDetails = localStorage.getItem('userDetails');
   return (
     <div className="App-container" style={{ height: window.innerHeight, width: window.innerWidth}} >
-      <TopNavBar showLogOut/>
+      <TopNavBar showLogOut={userDetails ? true: false}  userDetails={userDetails}/>
       <HomePage />
     </div>
   );
