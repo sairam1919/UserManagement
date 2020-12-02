@@ -21,11 +21,22 @@ const StepSuccess = ({data, handleClose}) => {
                 </Grid>
                 <Grid item xs={6}>
                     <strong>Full Name</strong> : Gudivada Dilip
+                    <br/>
                     <strong>Id Number</strong> :  5648508
+                    <br/>
+
                     <strong>Phone Number</strong>: 9987694650
+                    <br/>
+
                     <strong>Email Address</strong>: dgdh@gmail.com
+                    <br/>
+
                     <strong>Purpose of Visit</strong>: IT Support send by vendor
+                    <br/>
+
                     <strong>Representing</strong>: Watson
+                    <br/>
+
                 </Grid>
                 <Grid item xs={6}>
                     <strong>Building Access</strong> 
