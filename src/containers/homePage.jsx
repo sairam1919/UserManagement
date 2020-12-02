@@ -3,7 +3,7 @@ import Employees from './dashboard/employees';
 import Visitors from './dashboard/visitors';
 import Dashboard from './dashboard/Dashboard'
 
-const HomePage = () => {
+const HomePage = (props) => {
     const [currentComponent,setCurrentComponent] = useState('dashboard');
     const handleMenuClick = (option) => {
         setCurrentComponent(option);

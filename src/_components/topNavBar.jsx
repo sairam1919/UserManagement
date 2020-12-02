@@ -1,6 +1,7 @@
 import React from 'react';
 import { ExitToApp } from '@material-ui/icons';
-export function TopNavBar({showLogOut}) {
+export function TopNavBar({showLogOut, userDetails}) {
+    console.log(userDetails);
     return (
         <div style={{ height:70, width: window.innerWidth, background: '#364153', color: '#fff'}}>
         <div className="header-logo" style={{ display: 'inline-block'}} />
