@@ -60,18 +60,18 @@ router.post("/login", (req, res) => {
             apiResponse.message = "Error while connecting database"
             apiResponse.statuscode = "400";
             apiResponse.result = error;
-            res.send(apiResponse);
+            res.status(400).send(apiResponse);
         } else {
-            if (results.length && results[0].UserName === UserName && results[0].password === Password) {
+            if (results.length && results[0].UserID === UserName && results[0].password === Password) {
                 apiResponse.statuscode = "200";
                 apiResponse.message = "User Authenticated Successfully";
-                apiResponse.result = results;
+                apiResponse.result = results[0];
                 res.send(apiResponse);
             } else {
                 apiResponse.statuscode = "400";
                 apiResponse.message = "Unable to Authenticate the User";
-                apiResponse.result = results;
-                res.send(apiResponse);
+                apiResponse.result = " ";
+                res.status(500).send(apiResponse);
             }
         }
     });

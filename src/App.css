@@ -62,3 +62,7 @@
   height: 300px;
   padding: 10px;
 }
+
+.Login-ErrorMessage {
+  color: red;
+}

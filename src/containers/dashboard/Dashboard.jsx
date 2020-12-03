@@ -41,7 +41,8 @@ class Dashboard extends React.Component {
     this.setState({ isChangePassword: true });
   };
   handlePasswordUpdate = (bdy) => {
-    var url = Constants.CHANGE_PASSWORD +"Test@9948331372";
+    let userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    var url = Constants.CHANGE_PASSWORD + userDetails.UserID;
     fetch(url, {
       method: "PUT",
       body: JSON.stringify(bdy),
@@ -52,6 +53,8 @@ class Dashboard extends React.Component {
       .then((res) => {
         if (res.status === 200) {
           return res.json();
+        } else {
+          alert(res.message);
         }
       })
       .then((data) => {
