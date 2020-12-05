@@ -42,7 +42,7 @@ class Dashboard extends React.Component {
   };
   handlePasswordUpdate = (bdy) => {
     let userDetails = JSON.parse(localStorage.getItem('userDetails'));
-    var url = Constants.CHANGE_PASSWORD + userDetails.UserID;
+    var url = Constants.CHANGE_PASSWORD + userDetails.UserName;
     fetch(url, {
       method: "PUT",
       body: JSON.stringify(bdy),
@@ -62,6 +62,28 @@ class Dashboard extends React.Component {
       });
       this.handleClose();
   };
+
+  handleSaveEmployee = (addUserObject) => {
+    var url = Constants.SAVE_EMPLOYEE;
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(addUserObject),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          alert(res.message);
+        }
+      })
+      .then((data) => {
+        alert(data.message);
+      });
+      this.handleClose();
+  }
   render() {
     return (
       <Container
@@ -78,6 +100,7 @@ class Dashboard extends React.Component {
           <EditEmployee
             isOpen={this.state.isAddEmployee}
             handleClose={() => this.handleClose()}
+            handleSaveEmployee = {(e) => this.handleSaveEmployee(e)}
           />
         ) : null}
         {this.state.isChangePassword ? (

@@ -18,7 +18,7 @@ app.use(logger("dev"));
 app.use(express.json());
 
 // Parsers for POST data
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Set our api routes
@@ -30,14 +30,9 @@ app.use(express.static('client/build'));
 
 // serve up the index.html if express does'nt recognize the route
 app.get('*', (req, res) => {
-res.sendFile(path.resolve(__dirname, '../', 'build', 'index.html'));
+  res.sendFile(path.resolve(__dirname, '../', 'build', 'index.html'));
 });
 
-app.get("/fetchConfig", (req, res) => {
-  let data = fs.readFileSync('server/routes/config.json', 
-  {encoding:'utf8', flag:'r'});
-  res.send(data);
-  })
 
 const webSocketsServerPort = 8000;
 const webSocketServer = require('websocket').server;
@@ -50,15 +45,15 @@ const wsServer = new webSocketServer({
   httpServer: server
 });
 
-wsServer.on('request', function(request) {
+wsServer.on('request', function (request) {
   connections.add(request.accept(null, request.origin));
 });
 
-exports.Server = function() {
-  return { wsServer, connections};
+exports.Server = function () {
+  return { wsServer, connections };
 }
 
-wsServer.on('message', function(message) {
+wsServer.on('message', function (message) {
   connections.forEach((conn) => conn.send(message))
 })
 
