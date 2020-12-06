@@ -69,20 +69,6 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee }) => {
   }
 
   //const options = JSON.parse(localStorage.getItem('config')).Roles;
-  let options = [
-    {
-      "value": "admin",
-      "label": "Admin"
-    },
-    {
-      "value": "employee",
-      "label": "Employee"
-    },
-    {
-      "value": "visitor",
-      "label": "Visitor"
-    }
-  ];
   return (
     <Dialog open={isOpen}>
       <DialogTitle style={{ backgroundColor: 'rgb(54, 65, 83)', color: 'white', fontWeight: 500 }}>

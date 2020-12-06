@@ -3,7 +3,7 @@ CREATE TABLE `visitor` (
   `MobileNo` varchar(50) NOT NULL,
   `IssuedBy` varchar(255) NOT NULL,
   `IssuedDateTime` varchar(50) NOT NULL,
-  `access_location` text NOT NULL,
+  `access_locations` text NOT NULL,
   `InTime` varchar(50) DEFAULT NULL,
   `OutTime` varchar(50) DEFAULT NULL,
   `UserData` text NOT NULL,
