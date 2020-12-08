@@ -39,11 +39,17 @@ const StepOne = ({ handleNext }) => {
     }
 
     const handleSave = () => {
+        let dateObj = new Date();
+        let month = dateObj.getUTCMonth() + 1; //months from 1-12
+        let day = dateObj.getUTCDate();
+        let year = dateObj.getUTCFullYear();
+        let newdate = year + "-" + month + "-" + day;
+
         let generatePassObject = {
             "UserName": values.UserName,
             "MobileNumber": values.MobileNumber,
             "issuedBy": JSON.parse(localStorage.getItem('userDetails')).UserName,
-            "issuedDateTime": new Date(),
+            "issuedDateTime": newdate,
             "access_locations": JSON.stringify({}),
             "inTime": "",
             "outtime": "",
@@ -58,7 +64,7 @@ const StepOne = ({ handleNext }) => {
             "first_name": values.first_name,
             "last_name": values.last_name,
             "user_type": "visitor",
-            "id_code": { "bc": uuidv4() },
+            "id_code": JSON.stringify({ "bc": uuidv4() }),
             "pass_status": "Active"
         }
         handleNext(generatePassObject);
@@ -124,7 +130,7 @@ const StepOne = ({ handleNext }) => {
                             shrink: true,
                         }}
                         variant="outlined"
-                        name="mobilenumber"
+                        name="MobileNumber"
                         onChange={handleChange}
                     />
 

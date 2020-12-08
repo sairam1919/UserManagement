@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import { ArrowBack } from "@material-ui/icons";
@@ -7,8 +7,16 @@ import EditAccessRemove from "./editAccessRemove";
 import { Button } from "@material-ui/core";
 import { Edit } from "@material-ui/icons";
 
-let rows = [];
-var url = Constants.FETCH_ALL_VISITORS;
+const Visitors = ({ handleMenuClick }) => {
+  const [searchValue, setSearchValue] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [visitData, setVisitData] = useState({});
+  const [visitorInfo, setVisitorInfo] = useState([]);
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+  useEffect(() => {
+    var url = Constants.FETCH_ALL_VISITORS;
 fetch(url, {
   method: "GET",
   headers: {
@@ -18,23 +26,14 @@ fetch(url, {
   .then((res) => {
     if (res.status === 200) {
       return res.json();
-    } else {
-      this.setState({ isError: true, errorMessage: "Unknown Error Occurred." });
     }
   })
   .then((data) => {
     if (data) {
-      rows = data.result;
+     setVisitorInfo(data.result);
     }
   });
-
-const Visitors = ({ handleMenuClick }) => {
-  const [searchValue, setSearchValue] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [visitData, setVisitData] = useState({});
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+  }, [])
   const linkFollow = (cell, row, rowIndex, formatExtraData) => {
     return (
       <Button
@@ -81,6 +80,7 @@ const Visitors = ({ handleMenuClick }) => {
     },
   ];
 
+  let rows = visitorInfo;
   if (searchValue) {
     rows = rows.filter((item) => {
       return (

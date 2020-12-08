@@ -135,8 +135,9 @@ router.put("/user/:id", (req, res) => {
     let userData = req.body.userData;
     let first_name = req.body.first_name;
     let last_name = req.body.last_name;
+    let role = req.body.role;
 
-    var query1 = "UPDATE employee SET access_locations= " + "'" + access_locations + "'" + " , MobileNo=  " + "'" + mobilenumber + "'" + " , userData= " + "'" + userData + "'" + ", first_name= " + "'" + first_name + "'" + " , last_name= " + "'" + last_name + "'" + "   WHERE UserName= " + "'" + req.params.id + "'";
+    var query1 = "UPDATE employee SET access_locations= " + "'" + access_locations + "'" + " , MobileNo=  " + "'" + mobilenumber + "'" + " , userData= " + "'" + userData + "'" + ", first_name= " + "'" + first_name + "'" + " , last_name= " + "'" + last_name + "'" + " , Role= " + "'" + role + "'" + "  WHERE UserName= " + "'" + req.params.id + "'";
     connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database"

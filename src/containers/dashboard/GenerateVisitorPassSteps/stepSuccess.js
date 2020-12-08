@@ -25,17 +25,17 @@ const StepSuccess = ({ data, handleClose }) => {
                             <strong>Id Number</strong> :  {data.userPass}
                             <br />
 
-                            <strong>Phone Number</strong>: {data.mobilenumber}
+                            <strong>Phone Number</strong>: {data.MobileNumber}
                             <br />
 
-                            <strong>Email Address</strong>: {data.userData.email}
+                            <strong>Email Address</strong>: {JSON.parse(data.userData).email}
                             <br />
 
-                            <strong>Purpose of Visit</strong>: {data.userData.purposeOfVisit}
+                            <strong>Purpose of Visit</strong>: {JSON.parse(data.userData).purposeOfVisit}
 
                             <br />
 
-                            <strong>Representing</strong>: {data.userData.representing}
+                            <strong>Representing</strong>: {JSON.parse(data.userData).representing}
                             <br />
 
                         </Grid>
