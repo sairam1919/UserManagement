@@ -9,7 +9,7 @@ import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 import { v4 as uuidv4 } from 'uuid';
 
-const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, empData }) => {
+const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, empData, config }) => {
 
   const [values, setValues] = useState({
     UserName: "",
@@ -82,7 +82,7 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
     handleSaveEmployee({ "addUserObject": addUserObject, "isEditUser": isEditUser });
   }
 
-  //const options = JSON.parse(localStorage.getItem('config')).Roles;
+  const options = JSON.parse(config).Roles;
   return (
     <Dialog open={isOpen}>
       <DialogTitle style={{ backgroundColor: 'rgb(54, 65, 83)', color: 'white', fontWeight: 500 }}>
@@ -156,8 +156,8 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
               onChange={handleChange}
               value={values.role}
             >
-              <option value="admin">Admin</option>
-              <option value="employee">Employee</option>
+              <option value={options[0].value}>{options[0].label}</option>
+              <option value={options[1].value}>{options[1].label}</option>
             </Select>
           </FormControl>
 

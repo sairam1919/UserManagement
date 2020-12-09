@@ -12,7 +12,7 @@ import StepTwo from './GenerateVisitorPassSteps/stepTwo';
 import StepSuccess  from './GenerateVisitorPassSteps/stepSuccess';
 import Constants from '../../Constants';
 
-const GenerateVisitorPass = ({isOpen, handleClose}) => {
+const GenerateVisitorPass = ({isOpen, handleClose, config}) => {
     const [ step, setStep] = useState(1);
     const [data, setData] = useState();
     const [values, setValues] = useState({
@@ -25,6 +25,7 @@ const GenerateVisitorPass = ({isOpen, handleClose}) => {
     }
 
     const handleGeneratePass = (dataUrl) => {
+      setValues({...values, passObject: dataUrl });
       setStep(3)
       var url = Constants.GENERATE_PASS;
       fetch(url, {
@@ -47,7 +48,7 @@ const GenerateVisitorPass = ({isOpen, handleClose}) => {
             renderComponent = <StepOne handleNext={(e) => handleNext(e)} />
             break;
         case 2:
-            renderComponent = <StepTwo handleGeneratePass={handleGeneratePass} />
+            renderComponent = <StepTwo data={values.passObject} config = {config} handleGeneratePass={(e) => handleGeneratePass(e)} />
             break;
         case 3:
           renderComponent =<StepSuccess data={values.passObject}  handleClose={handleClose}/>

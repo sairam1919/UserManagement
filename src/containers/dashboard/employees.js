@@ -91,7 +91,7 @@ const Employees = ({ handleMenuClick, handleSaveEmployee }) => {
   return (
     <div>
       {isOpen ?
-        <EditEmployee isOpen={isOpen} empData={empData} isEditUser = {true} handleClose={handleClose} handleSaveEmployee = {handleSaveEmployee} />
+        <EditEmployee isOpen={isOpen} empData={empData} isEditUser = {true} handleClose={handleClose} handleSaveEmployee = {handleSaveEmployee} config = {this.props.config} />
         :
         null
       }

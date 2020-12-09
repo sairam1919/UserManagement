@@ -5,7 +5,7 @@ import { Button, FormControlLabel, Checkbox } from '@material-ui/core';
 import React, { useState} from 'react';
 import {CapturePhoto, WebcamCapture } from '../CapturePhoto/capturePhoto'
 
-const StepTwo = ({handleGeneratePass}) => {
+const StepTwo = ({handleGeneratePass, config, data}) => {
     const [ userPhotoUrl, setUserPhotoUrl] = useState('');
     // const [ idProofPhotoUrl, setIdProofPhotoUrl] = useState('');
     const handleUserPhotoCapture = (dataUrl) => {
@@ -13,32 +13,37 @@ const StepTwo = ({handleGeneratePass}) => {
     }
     
     const  handleSaveGeneratePass = () => {
-        handleGeneratePass(userPhotoUrl);
+        handleGeneratePass(data);
+    }
+
+    const handleCheckBox = (e) => {
+        
     }
     // const handleIdProofPhotoCapture = (dataUrl) => {
     //     setIdProofPhotoUrl(dataUrl);
     // }
+    let zones = JSON.parse(config.Zones);
     return (
-        <div style={{ width: 650, overflo: "hidden" }}>
+        <div style={{ width: 650, overflow: "hidden" }}>
             <DialogContent >
                 <DialogContentText>
                    <CapturePhoto dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture}/>
                    <FormControlLabel
-          value="Building 1"
+          value={zones[0].name}
           control={<Checkbox color="primary" />}
-          label="Building 1"
+          label={zones[0].name}
           labelPlacement="end"
         />
         <FormControlLabel
-          value="Building 2"
+          value={zones[1].name}
           control={<Checkbox color="primary" />}
-          label="Building 2"
+          label={zones[1].name}
           labelPlacement="end"
         />
         <FormControlLabel
-          value="Building 3"
+          value={zones[2].name}
           control={<Checkbox color="primary" />}
-          label="Building 3"
+          label={zones[2].name}
           labelPlacement="end"
         />
                    {/* <WebcamCapture /> */}

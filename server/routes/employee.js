@@ -212,12 +212,12 @@ router.get("/fetchConfig", (req, res) => {
                 apiResponse.message = "Error While fetching the config"
                 apiResponse.statuscode = "400";
                 apiResponse.result = err;
-                res.status(400).send(apiResponse);
+                res.status(400).send(JSON.parse(apiResponse));
             } else {
                 apiResponse.message = "Config Fetched Successfully"
                 apiResponse.statuscode = "200";
                 apiResponse.result = data;
-                res.status(200).send(apiResponse);
+                res.status(200).send(JSON.stringify(apiResponse));
             }
         });
 })
