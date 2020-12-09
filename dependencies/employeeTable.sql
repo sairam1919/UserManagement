@@ -1,4 +1,4 @@
-CREATE TABLE `employee` (
+CREATE TABLE usermanagement.`employee` (
   `UserName` varchar(255) NOT NULL,
   `MobileNo` varchar(50) NOT NULL,
   `IssuedBy` varchar(255) NOT NULL,
