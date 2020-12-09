@@ -1,4 +1,4 @@
-CREATE TABLE `visitor` (
+CREATE TABLE usermanagement.`visitor` (
   `UserName` varchar(255) NOT NULL,
   `MobileNo` varchar(50) NOT NULL,
   `IssuedBy` varchar(255) NOT NULL,
