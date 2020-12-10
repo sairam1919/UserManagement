@@ -23,7 +23,7 @@ const StepTwo = ({ handleGeneratePass, config, data }) => {
         if (document.getElementById([event.target.name]).checked) {
             data.push(JSON.parse(event.target.value));
         } else {
-            for(var i = data.length - 1; i >= 0; --i) {
+            for (var i = data.length - 1; i >= 0; --i) {
                 console.log("Inside the for loop", data[i], [event.target.name]);
                 if (data[i].name == [event.target.name]) {
                     data.splice(i, 1);
@@ -41,30 +41,18 @@ const StepTwo = ({ handleGeneratePass, config, data }) => {
             <DialogContent >
                 <DialogContentText>
                     <CapturePhoto dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture} />
-                    <FormControlLabel
-                        value={JSON.stringify(zones[0])}
-                        control={<Checkbox color="primary" id={zones[0].name} />}
-                        label={zones[0].name}
-                        labelPlacement="end"
-                        name = {zones[0].name}
-                        onChange={handleCheckBox}
-                    />
-                    <FormControlLabel
-                        value={JSON.stringify(zones[1])}
-                        control={<Checkbox color="primary" id={zones[1].name}/>}
-                        label={zones[1].name}
-                        labelPlacement="end"
-                        name = {zones[1].name}
-                        onChange={handleCheckBox}
-                    />
-                    <FormControlLabel
-                        value={JSON.stringify(zones[2])}
-                        control={<Checkbox color="primary" id={zones[2].name}/>}
-                        label={zones[2].name}
-                        labelPlacement="end"
-                        name = {zones[2].name}
-                        onChange={handleCheckBox}
-                    />
+                    {zones.map(zone => (
+                        <FormControlLabel
+                            value={JSON.stringify(zone)}
+                            control={<Checkbox color="primary" id={zone.name} />}
+                            label={zone.name}
+                            labelPlacement="end"
+                            name={zone.name}
+                            onChange={handleCheckBox}
+                        />
+                    ))
+                    }
+
                     {/* <WebcamCapture /> */}
                     {/* <CapturePhoto dataUrl={idProofPhotoUrl} handleCapture={handleIdProofPhotoCapture}/> */}
                 </DialogContentText>

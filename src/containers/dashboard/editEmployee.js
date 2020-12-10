@@ -156,8 +156,9 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
               onChange={handleChange}
               value={values.role}
             >
-              <option value={options[0].value}>{options[0].label}</option>
-              <option value={options[1].value}>{options[1].label}</option>
+              {options.map(option => (
+                <option value={option.value}>{option.label}</option>
+              ))}
             </Select>
           </FormControl>
 
