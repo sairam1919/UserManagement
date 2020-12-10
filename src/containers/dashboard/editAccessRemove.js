@@ -4,53 +4,77 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import React, { useState, useEffect } from 'react';
-import { FormControl, Checkbox, Button, FormControlLabel} from '@material-ui/core';
+import { FormControl, Checkbox, Button, FormControlLabel } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 
- const EditAccessRemove = ({ isOpen, handleClose }) => {
+const EditAccessRemove = ({ isOpen, handleClose, visitData, handleAssignRemove, config }) => {
+  const [accessLocations, setAccessLocations] = useState([]);
+  const [zones, setZones] = useState([]);
+  const [isChecked, setIsChecked] = useState();
+
+  useEffect(() => {
+    setAccessLocations(JSON.parse(visitData.access_locations));
+    let zones = JSON.parse(config).Zones;
+    for(let i = 0; i < JSON.parse(visitData.access_locations).length; i++) {
+      for(let j = 0; j < zones.length; j++ ) {
+        if(JSON.parse(visitData.access_locations)[i].name === zones[j].name) {
+          zones[i].checked = true
+        } else{
+          zones[i].checked = false
+        }
+      }
+    }
+    setZones(zones)
+  });
+
+  const handleCheckBox = (event) => {
+    let data = accessLocations;
+    if (document.getElementById([event.target.name]).checked) {
+      data.push(JSON.parse(event.target.value));
+    } else {
+      for (var i = data.length - 1; i >= 0; --i) {
+        if (data[i].name == [event.target.name]) {
+          data.splice(i, 1);
+        }
+      }
+    }
+    setAccessLocations(data)
+  }
+
+  const handleAssignRmv = () => {
+    visitData.access_locations = accessLocations;
+    handleAssignRemove(visitData);
+  }
+  
   return (
     <Dialog open={isOpen}>
       <DialogTitle style={{ backgroundColor: 'rgb(54, 65, 83)', color: 'white', fontWeight: 500 }}>
         Access Remove
       <Fab color="primary" aria-label="add" style={{ position: "absolute", right: 20, top: 2, backgroundColor: "grey" }} onClick={handleClose}>
-        <CloseIcon />
-      </Fab>
+          <CloseIcon />
+        </Fab>
       </DialogTitle>
       <DialogContent>
         <DialogContentText style={{ textAlign: 'center' }}>
-        <FormControl component="fieldset">
-        <FormControlLabel
-          value="Building 1"
-          control={<Checkbox color="primary" />}
-          label="Building 1"
-          labelPlacement="end"
-        />
-        </FormControl>
 
-        <FormControl component="fieldset">
-        <FormControlLabel
-          value="Building 2"
-          control={<Checkbox color="primary" />}
-          label="Building 2"
-          labelPlacement="end"
-        />
-        </FormControl>
-
-        <FormControl component="fieldset">
-        <FormControlLabel
-          value="Building 3"
-          control={<Checkbox color="primary" />}
-          label="Building 3"
-          labelPlacement="end"
-        />
-        </FormControl>
-      
+          {zones.map(module => (
+            <FormControl component="fieldset">
+              <FormControlLabel
+                value={JSON.stringify(module)}
+                control={<Checkbox color="primary" id={module.name} checked = {module.checked} onChange={handleCheckBox} />}
+                label={module.name}
+                name={module.name}
+                labelPlacement="end"
+              />
+            </FormControl>
+          ))
+          }
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-            <Button style={{ backgroundColor: 'green', color: 'white' }} variant="contained" onClick={handleClose}> Save </Button>
-       </DialogActions>
+        <Button style={{ backgroundColor: 'green', color: 'white' }} variant="contained" onClick={handleAssignRmv}> Save </Button>
+      </DialogActions>
     </Dialog>
   );
 }

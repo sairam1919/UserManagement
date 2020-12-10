@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core';
 import EditEmployee from './editEmployee';
 import Constants from '../../Constants';
 
-const Employees = ({ handleMenuClick, handleSaveEmployee }) => {
+const Employees = ({ handleMenuClick, handleSaveEmployee, config }) => {
   const [searchValue, setSearchValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [empData, setEmpData] = useState({});
@@ -91,7 +91,7 @@ const Employees = ({ handleMenuClick, handleSaveEmployee }) => {
   return (
     <div>
       {isOpen ?
-        <EditEmployee isOpen={isOpen} empData={empData} isEditUser = {true} handleClose={handleClose} handleSaveEmployee = {handleSaveEmployee} config = {this.props.config} />
+        <EditEmployee isOpen={isOpen} empData={empData} isEditUser = {true} handleClose={handleClose} handleSaveEmployee = {handleSaveEmployee} config = {config} />
         :
         null
       }

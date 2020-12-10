@@ -5,6 +5,9 @@ import { Button, FormControlLabel, Checkbox, Grid, DialogContent } from '@materi
 
 
 const StepSuccess = ({ data, handleClose }) => {
+    let renderZones = {
+
+    }
     return (
         <div style={{ width: 650, overflo: "hidden" }}>
             <DialogContent >
@@ -42,9 +45,12 @@ const StepSuccess = ({ data, handleClose }) => {
                         <Grid item xs={6}>
                             <strong>Building Access</strong>
                             <ul>
-                                <li> Building 1</li>
-                                <li> Building 4</li>
-                                <li> Building 6</li>
+                                {JSON.parse(data.access_locations).map(module => (
+                                    <li>
+                                        {module.name}
+                                    </li>
+                                ))
+                                }
                             </ul>
                         </Grid>
                     </Grid>

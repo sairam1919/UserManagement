@@ -12,4 +12,5 @@ export default Object.freeze({
    GENERATE_PASS: APP_IP_PORT + "/visitor/user",
    UPDATE_EMPLOYEE: APP_IP_PORT + "/employee/user/",
    UPDATE_VISITOR: APP_IP_PORT + "/visitor/user/",
+   ASSIGN_REMOVE_ACCESS_VISITOR: APP_IP_PORT + "/visitor/assignremove/"
 });
