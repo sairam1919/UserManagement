@@ -2,15 +2,18 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import { Button, FormControlLabel, Checkbox } from '@material-ui/core';
+
 import React, { useState } from 'react';
 import { CapturePhoto, WebcamCapture } from '../CapturePhoto/capturePhoto'
 
 const StepTwo = ({ handleGeneratePass, config, data }) => {
     const [userPhotoUrl, setUserPhotoUrl] = useState('');
     const [accessLocations, setAccessLocations] = useState([]);
-    // const [ idProofPhotoUrl, setIdProofPhotoUrl] = useState('');
+    const [ idProofPhotoUrl, setIdProofPhotoUrl] = useState('');
+
     const handleUserPhotoCapture = (dataUrl) => {
         setUserPhotoUrl(dataUrl);
+        console.log(dataUrl)
     }
 
     const handleSaveGeneratePass = () => {
@@ -40,6 +43,8 @@ const StepTwo = ({ handleGeneratePass, config, data }) => {
         <div style={{ width: 650, overflow: "hidden" }}>
             <DialogContent >
                 <DialogContentText>
+                  <WebcamCapture  dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture}/>
+
                     <CapturePhoto dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture} />
                     {zones.map(zone => (
                         <FormControlLabel
