@@ -29,12 +29,17 @@ export const CapturePhoto = (props) => {
 
 
 export class WebcamCapture extends React.Component {
+  constructor(props) {
+    super(props);
+  }
     setRef = webcam => {
       this.webcam = webcam;
     };
   
     capture = () => {
       const imageSrc = this.webcam.getScreenshot();
+      this.props.handleCapture(imageSrc)
+
     };
   
     render() {
@@ -46,6 +51,14 @@ export class WebcamCapture extends React.Component {
   
       return (
         <div>
+            {
+        (this.props.dataUrl)
+          ? <img 
+          src={this.props.dataUrl}
+          style={{ height: 300 , width: 300}}
+          />
+          : 
+          <div>
           <Webcam
             audio={false}
             height={350}
@@ -55,7 +68,8 @@ export class WebcamCapture extends React.Component {
             videoConstraints={videoConstraints}
           />
           <button onClick={this.capture}>Capture photo</button>
-        </div>
+            </div> }
+            </div>
       );
     }
   }
