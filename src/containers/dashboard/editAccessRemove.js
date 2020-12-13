@@ -29,10 +29,13 @@ const EditAccessRemove = ({ isOpen, handleClose, visitData, handleAssignRemove, 
   });
 
   const handleCheckBox = (event) => {
+    alert("handleCheckBox Triggerd");
     let data = accessLocations;
     if (document.getElementById([event.target.name]).checked) {
+      alert("handleCheckBox Triggerd");
       data.push(JSON.parse(event.target.value));
     } else {
+      alert("handleCheckBox Triggerd");
       for (var i = data.length - 1; i >= 0; --i) {
         if (data[i].name == [event.target.name]) {
           data.splice(i, 1);
@@ -62,9 +65,10 @@ const EditAccessRemove = ({ isOpen, handleClose, visitData, handleAssignRemove, 
             <FormControl component="fieldset">
               <FormControlLabel
                 value={JSON.stringify(module)}
-                control={<Checkbox color="primary" id={module.name} checked = {module.checked} onChange={handleCheckBox} />}
+                control={<Checkbox color="primary" id={module.name} checked = {module.checked} />}
                 label={module.name}
                 name={module.name}
+                onChange={handleCheckBox}
                 labelPlacement="end"
               />
             </FormControl>

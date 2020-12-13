@@ -1,6 +1,6 @@
 /*Constants for license managment*/
 
-export const APP_IP_PORT = "http://localhost:4000";
+export const APP_IP_PORT = "http://stlbiopdv02x115:4000";
 
 export default Object.freeze({
    FETCH_Login_INFO:  APP_IP_PORT +"/employee/login",
