@@ -17,7 +17,7 @@ const StepTwo = ({handleGeneratePass}) => {
     }
     
     const  handleSaveGeneratePass = () => {
-        handleGeneratePass();
+        handleGeneratePass(userPhotoUrl);
     }
     // const handleIdProofPhotoCapture = (dataUrl) => {
     //     setIdProofPhotoUrl(dataUrl);

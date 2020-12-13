@@ -8,7 +8,6 @@ const StepSuccess = ({data, handleClose}) => {
 
     console.log('image', data);
     return (
-        <div style={{ width: 650, overflo: "hidden" }}>
         <DialogContent >
             <DialogContentText>
             <Grid container spacing={3}>
@@ -50,11 +49,10 @@ const StepSuccess = ({data, handleClose}) => {
                 </Grid>
             </Grid>
             </DialogContentText>
-        </DialogContent>
-        <DialogActions>
+            <DialogActions>
             <Button style={{ backgroundColor: 'green', color: 'white' }} variant="contained" onClick={handleClose}> Close </Button>
         </DialogActions>
-    </div>
+        </DialogContent>
     );
 }
 
