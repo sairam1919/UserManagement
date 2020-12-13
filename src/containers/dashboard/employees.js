@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { ArrowBack, Edit } from '@material-ui/icons';
@@ -6,29 +6,29 @@ import { Button } from '@material-ui/core';
 import EditEmployee from './editEmployee';
 import Constants from '../../Constants';
 
-let rows = [];
-var url = Constants.FETCH_ALL_USERS;
-fetch(url, {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json"
-  }
-}).then(res => {
-  if (res.status === 200) {
-    return res.json();
-  } else {
-    this.setState({ isError: true, errorMessage: "Unknown Error Occurred." });
-  }
-}).then(data => {
-  if (data) {
-    rows = data.result;
-  }
-});
-
-const Employees = ({ handleMenuClick }) => {
+const Employees = ({ handleMenuClick, handleSaveEmployee, config }) => {
   const [searchValue, setSearchValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [empData, setEmpData] = useState({});
+  const [empInfo, setEmpInfo] = useState([]);
+
+  useEffect(() => {
+    var url = Constants.FETCH_ALL_USERS;
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        return res.json();
+      }
+    }).then(data => {
+      if (data) {
+        setEmpInfo(data.result);
+      }
+    });
+  }, []);
   const columns = [
     {
       dataField: 'UserName',
@@ -81,6 +81,7 @@ const Employees = ({ handleMenuClick }) => {
     setIsOpen(false);
   }
 
+  let rows = empInfo;
   if (searchValue) {
     rows = rows.filter((item) => {
       return (item.user_name.toLowerCase().indexOf(searchValue) > -1 || item.first_name.toLowerCase().indexOf(searchValue) > -1 || item.last_name.toLowerCase().indexOf(searchValue) > -1)
@@ -90,7 +91,7 @@ const Employees = ({ handleMenuClick }) => {
   return (
     <div>
       {isOpen ?
-        <EditEmployee isOpen={isOpen} empData={empData} handleClose={handleClose} />
+        <EditEmployee isOpen={isOpen} empData={empData} isEditUser = {true} handleClose={handleClose} handleSaveEmployee = {handleSaveEmployee} config = {config} />
         :
         null
       }

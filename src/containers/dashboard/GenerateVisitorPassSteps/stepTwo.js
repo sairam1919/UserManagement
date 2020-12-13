@@ -2,50 +2,65 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import { Button, FormControlLabel, Checkbox } from '@material-ui/core';
-import React, { useState} from 'react';
-import {CapturePhoto, WebcamCapture } from '../CapturePhoto/capturePhoto'
-// import {CaptureImage } from '../CapturePhoto/captureImage'
-// import TakePhoto  from '../CapturePhoto/takePhoto'
 
+import React, { useState } from 'react';
+import { CapturePhoto, WebcamCapture } from '../CapturePhoto/capturePhoto'
 
-const StepTwo = ({handleGeneratePass}) => {
-    const [ userPhotoUrl, setUserPhotoUrl] = useState('');
+const StepTwo = ({ handleGeneratePass, config, data }) => {
+    const [userPhotoUrl, setUserPhotoUrl] = useState('');
+    const [accessLocations, setAccessLocations] = useState([]);
     const [ idProofPhotoUrl, setIdProofPhotoUrl] = useState('');
+
     const handleUserPhotoCapture = (dataUrl) => {
         setUserPhotoUrl(dataUrl);
         console.log(dataUrl)
     }
-    
-    const  handleSaveGeneratePass = () => {
-        handleGeneratePass(userPhotoUrl);
+
+    const handleSaveGeneratePass = () => {
+        data.access_locations = JSON.stringify(accessLocations);
+        handleGeneratePass(data);
+    }
+
+    const handleCheckBox = (event) => {
+        let data = accessLocations;
+        if (document.getElementById([event.target.name]).checked) {
+            data.push(JSON.parse(event.target.value));
+        } else {
+            for (var i = data.length - 1; i >= 0; --i) {
+                console.log("Inside the for loop", data[i], [event.target.name]);
+                if (data[i].name == [event.target.name]) {
+                    data.splice(i, 1);
+                }
+            }
+        }
+        setAccessLocations(data)
     }
     // const handleIdProofPhotoCapture = (dataUrl) => {
     //     setIdProofPhotoUrl(dataUrl);
     // }
+    let zones = JSON.parse(config).Zones;
     return (
-        <div style={{ width: 650, overflo: "hidden" }}>
+        <div style={{ width: 650, overflow: "hidden" }}>
             <DialogContent >
                 <DialogContentText>
                   <WebcamCapture  dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture}/>
-                   <FormControlLabel
-          value="Building 1"
-          control={<Checkbox color="primary" />}
-          label="Building 1"
-          labelPlacement="end"
-        />
-        <FormControlLabel
-          value="Building 2"
-          control={<Checkbox color="primary" />}
-          label="Building 2"
-          labelPlacement="end"
-        />
-        <FormControlLabel
-          value="Building 3"
-          control={<Checkbox color="primary" />}
-          label="Building 3"
-          labelPlacement="end"
-        />
-                        </DialogContentText>
+
+                    <CapturePhoto dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture} />
+                    {zones.map(zone => (
+                        <FormControlLabel
+                            value={JSON.stringify(zone)}
+                            control={<Checkbox color="primary" id={zone.name} />}
+                            label={zone.name}
+                            labelPlacement="end"
+                            name={zone.name}
+                            onChange={handleCheckBox}
+                        />
+                    ))
+                    }
+
+                    {/* <WebcamCapture /> */}
+                    {/* <CapturePhoto dataUrl={idProofPhotoUrl} handleCapture={handleIdProofPhotoCapture}/> */}
+                </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button style={{ backgroundColor: 'green', color: 'white' }} variant="contained" onClick={handleSaveGeneratePass}> Generate Pass </Button>

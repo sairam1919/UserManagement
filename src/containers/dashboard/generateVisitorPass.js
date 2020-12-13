@@ -10,30 +10,49 @@ import CloseIcon from '@material-ui/icons/Close';
 import StepOne from './GenerateVisitorPassSteps/stepOne';
 import StepTwo from './GenerateVisitorPassSteps/stepTwo';
 import StepSuccess  from './GenerateVisitorPassSteps/stepSuccess';
+import Constants from '../../Constants';
 
-const GenerateVisitorPass = ({isOpen, handleClose}) => {
+const GenerateVisitorPass = ({isOpen, handleClose, config}) => {
     const [ step, setStep] = useState(1);
     const [data, setData] = useState();
+    const [values, setValues] = useState({
+      passObject: {},
+    });
 
-    const handleNext = () => {
+    const handleNext = (generatePassObject) => {
         setStep(2);
+        setValues({...values, passObject: generatePassObject });
     }
 
-    const handleGeneratePass = (dataUrl) => {
+    const handleGeneratePass = (data) => {
+      setValues({...values, passObject: data });
       setStep(3)
-      setData(dataUrl);
-        // handleClose();
+      var url = Constants.GENERATE_PASS;
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify(values.passObject),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+            return res.json();
+        })
+        .then((data) => {
+          alert(data.message);
+        });
     }
+
     let renderComponent = null;
     switch(step) {
         case 1 : 
-            renderComponent = <StepOne handleNext={handleNext} />
+            renderComponent = <StepOne handleNext={(e) => handleNext(e)} />
             break;
         case 2:
-            renderComponent = <StepTwo handleGeneratePass={handleGeneratePass} />
+            renderComponent = <StepTwo data={values.passObject} config = {config} handleGeneratePass={(e) => handleGeneratePass(e)} />
             break;
         case 3:
-          renderComponent =<StepSuccess data={data}  handleClose={handleClose}/>
+          renderComponent =<StepSuccess data={values.passObject}  handleClose={handleClose}/>
           break;
           default: 
           renderComponent = <StepOne handleNext={handleNext} />

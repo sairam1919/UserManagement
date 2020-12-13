@@ -13,35 +13,28 @@ import Constants from "../../Constants";
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isGeneratePassOpen: false,
-      isAddEmployee: false,
-      isChangePassword: false,
-    };
   }
   menuClick = (menu) => {
     this.props.handleMenuClick(menu);
   };
   generatePass = () => {
-    this.setState({ isGeneratePassOpen: true });
+    console.log("Inside the GeneratePass Dashboard");
+    this.props.generatePass();
   };
 
   handleClose = () => {
-    this.setState({
-      isGeneratePassOpen: false,
-      isAddEmployee: false,
-      isChangePassword: false,
-    });
+    this.props.handleClose();
   };
 
   handleAddEmployee = () => {
-    this.setState({ isAddEmployee: true });
+    this.props.handleAddEmployee();
   };
   handleChangePassword = () => {
-    this.setState({ isChangePassword: true });
+    this.props.handleChangePassword();
   };
   handlePasswordUpdate = (bdy) => {
-    var url = Constants.CHANGE_PASSWORD +"Test@9948331372";
+    let userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    var url = Constants.CHANGE_PASSWORD + userDetails.UserName;
     fetch(url, {
       method: "PUT",
       body: JSON.stringify(bdy),
@@ -52,34 +45,46 @@ class Dashboard extends React.Component {
       .then((res) => {
         if (res.status === 200) {
           return res.json();
+        } else {
+          alert(res.message);
         }
       })
       .then((data) => {
         alert(data.message);
       });
-      this.handleClose();
+    this.handleClose();
   };
+
+  handleSaveEmployee = (data) => {
+    this.props.handleSaveEmployee(data);
+  };
+
   render() {
+    console.log("Inside the GeneratePass Render", this.props.isGeneratePassOpen);
     return (
       <Container
         maxWidth={false}
         style={{ padding: "5% 1%", overflow: "hidden" }}
       >
-        {this.state.isGeneratePassOpen ? (
+        {this.props.isGeneratePassOpen ? (
           <GenerateVisitorPass
-            isOpen={this.state.isGeneratePassOpen}
+            isOpen={this.props.isGeneratePassOpen}
             handleClose={() => this.handleClose()}
+            config={this.props.config}
           />
         ) : null}
-        {this.state.isAddEmployee ? (
+        {this.props.isAddEmployee ? (
           <EditEmployee
-            isOpen={this.state.isAddEmployee}
+            isOpen={this.props.isAddEmployee}
             handleClose={() => this.handleClose()}
+            handleSaveEmployee={(e) => this.handleSaveEmployee(e)}
+            isEditUser={false}
+            config={this.props.config}
           />
         ) : null}
-        {this.state.isChangePassword ? (
+        {this.props.isChangePassword ? (
           <ChangePassword
-            isOpen={this.state.isChangePassword}
+            isOpen={this.props.isChangePassword}
             handlePasswordUpdate={(e) => this.handlePasswordUpdate(e)}
             handleClose={() => this.handleClose()}
           />
