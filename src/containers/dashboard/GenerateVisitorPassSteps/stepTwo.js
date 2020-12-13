@@ -4,16 +4,20 @@ import DialogActions from '@material-ui/core/DialogActions';
 import { Button, FormControlLabel, Checkbox } from '@material-ui/core';
 import React, { useState} from 'react';
 import {CapturePhoto, WebcamCapture } from '../CapturePhoto/capturePhoto'
+// import {CaptureImage } from '../CapturePhoto/captureImage'
+// import TakePhoto  from '../CapturePhoto/takePhoto'
+
 
 const StepTwo = ({handleGeneratePass}) => {
     const [ userPhotoUrl, setUserPhotoUrl] = useState('');
-    // const [ idProofPhotoUrl, setIdProofPhotoUrl] = useState('');
+    const [ idProofPhotoUrl, setIdProofPhotoUrl] = useState('');
     const handleUserPhotoCapture = (dataUrl) => {
         setUserPhotoUrl(dataUrl);
+        console.log(dataUrl)
     }
     
     const  handleSaveGeneratePass = () => {
-        handleGeneratePass(userPhotoUrl);
+        handleGeneratePass();
     }
     // const handleIdProofPhotoCapture = (dataUrl) => {
     //     setIdProofPhotoUrl(dataUrl);
@@ -22,7 +26,7 @@ const StepTwo = ({handleGeneratePass}) => {
         <div style={{ width: 650, overflo: "hidden" }}>
             <DialogContent >
                 <DialogContentText>
-                   <CapturePhoto dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture}/>
+                  <WebcamCapture  dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture}/>
                    <FormControlLabel
           value="Building 1"
           control={<Checkbox color="primary" />}
@@ -41,9 +45,7 @@ const StepTwo = ({handleGeneratePass}) => {
           label="Building 3"
           labelPlacement="end"
         />
-                   {/* <WebcamCapture /> */}
-                   {/* <CapturePhoto dataUrl={idProofPhotoUrl} handleCapture={handleIdProofPhotoCapture}/> */}
-                </DialogContentText>
+                        </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button style={{ backgroundColor: 'green', color: 'white' }} variant="contained" onClick={handleSaveGeneratePass}> Generate Pass </Button>

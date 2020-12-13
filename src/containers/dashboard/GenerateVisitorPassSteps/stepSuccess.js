@@ -5,6 +5,8 @@ import { Button, FormControlLabel, Checkbox, Grid, DialogContent } from '@materi
 
 
 const StepSuccess = ({data, handleClose}) => {
+
+    console.log('image', data);
     return (
         <div style={{ width: 650, overflo: "hidden" }}>
         <DialogContent >
