@@ -7,7 +7,7 @@ import EditAccessRemove from "./editAccessRemove";
 import { Button } from "@material-ui/core";
 import { Edit } from "@material-ui/icons";
 
-const Visitors = ({ handleMenuClick }) => {
+const Visitors = ({ handleMenuClick, config }) => {
   const [searchValue, setSearchValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [visitData, setVisitData] = useState({});
@@ -17,23 +17,44 @@ const Visitors = ({ handleMenuClick }) => {
   };
   useEffect(() => {
     var url = Constants.FETCH_ALL_VISITORS;
-fetch(url, {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json",
-  },
-})
-  .then((res) => {
-    if (res.status === 200) {
-      return res.json();
-    }
-  })
-  .then((data) => {
-    if (data) {
-     setVisitorInfo(data.result);
-    }
-  });
-  }, [])
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        if (data) {
+          setVisitorInfo(data.result);
+        }
+      });
+  }, []);
+
+  const handleAssignRemove = (data) => {
+    var url = Constants.UPDATE_VISITOR + data.UserName;
+    fetch(url, {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          alert(res.message);
+        }
+      })
+      .then((data) => {
+        alert(data.message);
+      });
+  }
   const linkFollow = (cell, row, rowIndex, formatExtraData) => {
     return (
       <Button
@@ -100,6 +121,8 @@ fetch(url, {
           isOpen={isOpen}
           visitData={visitData}
           handleClose={handleClose}
+          handleAssignRemove={(e) => handleAssignRemove(e)}
+          config = {config}
         />
       ) : null}
       <div

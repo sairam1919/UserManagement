@@ -24,8 +24,8 @@ const GenerateVisitorPass = ({isOpen, handleClose, config}) => {
         setValues({...values, passObject: generatePassObject });
     }
 
-    const handleGeneratePass = (dataUrl) => {
-      setValues({...values, passObject: dataUrl });
+    const handleGeneratePass = (data) => {
+      setValues({...values, passObject: data });
       setStep(3)
       var url = Constants.GENERATE_PASS;
       fetch(url, {
@@ -42,6 +42,7 @@ const GenerateVisitorPass = ({isOpen, handleClose, config}) => {
           alert(data.message);
         });
     }
+
     let renderComponent = null;
     switch(step) {
         case 1 : 
