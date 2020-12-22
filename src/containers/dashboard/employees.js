@@ -5,13 +5,15 @@ import { ArrowBack, Edit } from '@material-ui/icons';
 import { Button } from '@material-ui/core';
 import EditEmployee from './editEmployee';
 import Constants from '../../Constants';
+import EditAccessRemove from "./editAccessRemove";
 
 const Employees = ({ handleMenuClick, handleSaveEmployee, config }) => {
   const [searchValue, setSearchValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [empData, setEmpData] = useState({});
   const [empInfo, setEmpInfo] = useState([]);
-
+const [isAccessOpen, setIsAccessOpen] =useState(false);
+const[ accessLocations, setAccessLocations] =useState({});
   useEffect(() => {
     var url = Constants.FETCH_ALL_USERS;
     fetch(url, {
@@ -54,11 +56,35 @@ const Employees = ({ handleMenuClick, handleSaveEmployee, config }) => {
 
     },
     {
+      dataField: 'Current_Location',
+      text: 'Current Location',
+      sort: true
+    },
+    {
       dataField: "edit",
       text: "Edit",
       formatter: (cell, row, rowIndex, formatExtraData) => linkFollow(cell, row, rowIndex, formatExtraData),
-    }
+    },
+    {
+      dataField: "AccessRemove",
+      text: "Access / Remove",
+      formatter: (cell, row, rowIndex, formatExtraData) =>
+      linkFollowAccessRemove(cell, row, rowIndex, formatExtraData),
+    },
   ];
+
+  const linkFollowAccessRemove = (cell, row, rowIndex, formatExtraData) => {
+    return (
+      <Button
+        onClick={() => {
+          setAccessLocations(row);
+          setIsAccessOpen(true);
+        }}
+      >
+        <Edit />
+      </Button>
+    );
+  };
 
   const linkFollow = (cell, row, rowIndex, formatExtraData) => {
     return (
@@ -79,6 +105,7 @@ const Employees = ({ handleMenuClick, handleSaveEmployee, config }) => {
 
   const handleClose = () => {
     setIsOpen(false);
+    setIsAccessOpen(false);
   }
 
   let rows = empInfo;
@@ -88,8 +115,38 @@ const Employees = ({ handleMenuClick, handleSaveEmployee, config }) => {
     });
   }
 
+  const handleAssignRemove = (data) => {
+    var url = Constants.UPDATE_VISITOR + data.UserName;
+    fetch(url, {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          alert(res.message);
+        }
+      })
+      .then((data) => {
+        alert(data.message);
+      });
+  }
+
   return (
     <div>
+       {isAccessOpen ? (
+        <EditAccessRemove
+          isOpen={isAccessOpen}
+          visitData={accessLocations}
+          handleClose={handleClose}
+          handleAssignRemove={(e) => handleAssignRemove(e)}
+          config = {config}
+        />
+      ) : null}
       {isOpen ?
         <EditEmployee isOpen={isOpen} empData={empData} isEditUser = {true} handleClose={handleClose} handleSaveEmployee = {handleSaveEmployee} config = {config} />
         :

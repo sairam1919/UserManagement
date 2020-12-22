@@ -26,7 +26,7 @@ const EditAccessRemove = ({ isOpen, handleClose, visitData, handleAssignRemove, 
       }
     }
     setZones(zones)
-  });
+  },[]);
 
   const handleCheckBox = (event) => {
     alert("handleCheckBox Triggerd");
