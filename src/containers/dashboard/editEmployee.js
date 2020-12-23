@@ -12,15 +12,15 @@ import { v4 as uuidv4 } from 'uuid';
 const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, empData, config }) => {
     console.log('empData', empData)
     const [values, setValues] = useState({
-        UserName: empData.UserName || "",
-        MobileNo: empData.MobileNo || "",
+        UserName: empData && empData.UserName || "",
+        MobileNo: empData && empData.MobileNo || "",
         issuedBy: "",
         issuedDateTime: "",
         access_locations: {},
         inTime: "",
         outtime: "",
         userData: {},
-        role: empData.Role || '',
+        role: empData && empData.Role || '',
         password: "",
         current_location: "",
         userPass: "",
@@ -29,10 +29,10 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
         userIdProofNumber: "",
         userPassImage: "",
         expiryDate: "NO EXPIRY",
-        first_name: empData.first_name || '',
-        last_name: empData.last_name || '',
+        first_name: empData && empData.first_name || '',
+        last_name: empData && empData.last_name || '',
         user_type: "",
-        id_code: empData.id_code || '',
+        id_code: empData && empData.id_code || '',
         pass_status: "Active",
     });
 
@@ -94,10 +94,15 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
 
     const options = JSON.parse(config).Roles;
 
-    let checkDataToEnable = true; 
-    if(values.userName && values.role && values.first_name && values.last_name && values.id_code && values.MobileNo) {
-        checkDataToEnable= false;
-    } 
+    const [checkDataToEnable, setCheckDataToEnable] = useState(true); 
+    useEffect(() => {
+        if(values.UserName && values.role && values.first_name && values.last_name && values.id_code && values.MobileNo) {
+            setCheckDataToEnable(false);
+        } else {
+            setCheckDataToEnable(true);
+        }
+    },[values,checkDataToEnable])
+     
     return (
         < Dialog open={isOpen} >
             < DialogTitle style={{ backgroundColor: 'rgb(54, 65, 83)', color: 'white', fontWeight: 500 }} >
