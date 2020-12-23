@@ -87,6 +87,7 @@ const[ accessLocations, setAccessLocations] =useState({});
   };
 
   const linkFollow = (cell, row, rowIndex, formatExtraData) => {
+    console.log('row', row);
     return (
       <Button
         onClick={() => {
@@ -111,7 +112,9 @@ const[ accessLocations, setAccessLocations] =useState({});
   let rows = empInfo;
   if (searchValue) {
     rows = rows.filter((item) => {
-      return (item.user_name.toLowerCase().indexOf(searchValue) > -1 || item.first_name.toLowerCase().indexOf(searchValue) > -1 || item.last_name.toLowerCase().indexOf(searchValue) > -1)
+      return ( (item.user_name && item.user_name.toLowerCase().indexOf(searchValue) > -1) || 
+      (item.first_name && item.first_name.toLowerCase().indexOf(searchValue) > -1) || 
+      (item.last_name && item.last_name.toLowerCase().indexOf(searchValue) > -1))
     });
   }
 

@@ -10,17 +10,17 @@ import CloseIcon from '@material-ui/icons/Close';
 import { v4 as uuidv4 } from 'uuid';
 
 const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, empData, config }) => {
-
+    console.log('empData', empData)
     const [values, setValues] = useState({
-        UserName: "",
-        MobileNumber: "",
+        UserName: empData.UserName || "",
+        MobileNo: empData.MobileNo || "",
         issuedBy: "",
         issuedDateTime: "",
         access_locations: {},
         inTime: "",
         outtime: "",
         userData: {},
-        role: "",
+        role: empData.Role || '',
         password: "",
         current_location: "",
         userPass: "",
@@ -29,10 +29,10 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
         userIdProofNumber: "",
         userPassImage: "",
         expiryDate: "NO EXPIRY",
-        first_name: "",
-        last_name: "",
+        first_name: empData.first_name || '',
+        last_name: empData.last_name || '',
         user_type: "",
-        id_code: "",
+        id_code: empData.id_code || '',
         pass_status: "Active",
     });
 
@@ -58,7 +58,7 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
             let newdate = year + "-" + month + "-" + day;
             addUserObject = {
                 "UserName": values.UserName,
-                "MobileNumber": values.MobileNumber,
+                "MobileNumber": values.MobileNo,
                 "issuedBy": JSON.parse(localStorage.getItem('userDetails')).UserName,
                 "issuedDateTime": newdate,
                 "access_locations": JSON.stringify({}),
@@ -93,6 +93,11 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
     }
 
     const options = JSON.parse(config).Roles;
+
+    let checkDataToEnable = true; 
+    if(values.userName && values.role && values.first_name && values.last_name && values.id_code && values.MobileNo) {
+        checkDataToEnable= false;
+    } 
     return (
         < Dialog open={isOpen} >
             < DialogTitle style={{ backgroundColor: 'rgb(54, 65, 83)', color: 'white', fontWeight: 500 }} >
@@ -119,10 +124,12 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                         variant="outlined"
                         name="UserName"
                         onChange={handleChange}
+                        error={!values.UserName}
+                        values={values.UserName}
                     /> : ''}
                     < TextField
-                        label="Email Address"
-                        placeholder="Enter Email Address (Required Field)"
+                        label="Mobile Number"
+                        placeholder="Enter Mobile Number (Required Field)"
                         fullWidth
                         margin="normal"
                         InputLabelProps={
@@ -131,8 +138,10 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                             }
                         }
                         variant="outlined"
-                        name="email"
+                        name="MobileNo"
                         onChange={handleChange}
+                        error={!values.MobileNo}
+                        value={values.MobileNo}
                     />
                     <TextField
                         label="First Name"
@@ -147,6 +156,9 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                         variant="outlined"
                         name="first_name"
                         onChange={handleChange}
+                        error={!values.first_name}
+                        value={values.first_name}
+
                     />
                     <TextField
                         label="Last Name"
@@ -161,6 +173,9 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                         variant="outlined"
                         name="last_name"
                         onChange={handleChange}
+                        error={!values.last_name}
+                        value={values.last_name}
+
                     />
                     <TextField
                         label="RF ID Number"
@@ -175,6 +190,8 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                         variant="outlined"
                         name="id_code"
                         onChange={handleChange}
+                        error={!values.id_code}
+                        value={values.id_code}
                     />
                     <FormControl variant="outlined" fullWidth >
                         <InputLabel id="role-select-outlined-label" > Role </InputLabel>
@@ -190,7 +207,9 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                             variant="outlined"
                             name="role"
                             onChange={handleChange}
-                            value={values.role} >
+                            value={values.role}
+                            error={!values.role}
+                            >
                             {
                                 options.map(option => (
                                     <option value={option.value} > { option.label} </option>
@@ -205,7 +224,9 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                     { backgroundColor: 'green', color: 'white' }
                 }
                     variant="contained"
-                    onClick={handleSave} > Save </Button>
+                    onClick={ checkDataToEnable ? null : handleSave}
+                    disabled={checkDataToEnable}
+                    > Save </Button>
             </DialogActions>
         </Dialog>
     );
