@@ -1,5 +1,5 @@
 import React from 'react';
-import Camera from 'react-html5-camera-photo';
+import Camera, { IMAGE_TYPES } from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 import Webcam from "react-webcam";
 
@@ -20,6 +20,8 @@ export const CapturePhoto = (props) => {
           <div style={{ height: 300 , width: 300}}>
           <Camera 
           onTakePhotoAnimationDone = { (dataUri) => { handleTakePhotoAnimationDone(dataUri); } }
+          imageType = {IMAGE_TYPES.JPG}
+          sizeFactor={0.5}
           />
           </div>
       }

@@ -1,20 +1,29 @@
 import React from 'react';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
-import { Button, FormControlLabel, Checkbox, Grid, DialogContent } from '@material-ui/core';
+import { Button, Paper, Grid, DialogContent } from '@material-ui/core';
 
 
 const StepSuccess = ({ data, handleClose }) => {
-    let renderZones = {
-
-    }
+    const printTable = () => {
+        var content = document.getElementById("table-data-container");
+        var pri = document.getElementById("ifmcontentstoprint").contentWindow;
+        pri.document.open();
+        console.log("content",content.innerHTML)
+        pri.document.write(content.innerHTML);
+        pri.document.close();
+        pri.focus();
+        pri.print();
+      };
     return (
         <div style={{ width: 650, overflo: "hidden" }}>
+                  <iframe id="ifmcontentstoprint" style={{height: '0px', width: '0px', position: 'absolute'}}></iframe>
+
             <DialogContent >
                 <DialogContentText>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={3} id="table-data-container" component={Paper}>
                         <Grid item xs={6}>
-                            <img src={data} style={{ height: 300, width: 300 }} />
+                            <img src={data.userImage} style={{ height: 300, width: 300 }} />
                         </Grid>
                         <Grid item xs={6}>
                             <strong> Pass Validity </strong>
@@ -57,6 +66,7 @@ const StepSuccess = ({ data, handleClose }) => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
+            <Button style={{ backgroundColor: 'green', color: 'white' }} variant="contained" onClick={printTable}> Print </Button>
                 <Button style={{ backgroundColor: 'green', color: 'white' }} variant="contained" onClick={handleClose}> Close </Button>
             </DialogActions>
         </div>
