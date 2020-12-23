@@ -204,8 +204,11 @@ const StepOne = ({ handleNext }) => {
                     name="purposeOfVisit"
                     onChange={handleChange}
                 />
-                <input type="date"
+
+<TextField
+type="date"
                     label="Expiry Date"
+                    placeholder="Expiry Date"
                     fullWidth margin="normal"
                     InputLabelProps={
                         {
@@ -213,7 +216,6 @@ const StepOne = ({ handleNext }) => {
                         }
                     }
                     variant="outlined"
-                    value={values.expiryDate}
                     name="expiryDate"
                     onChange={handleChange}
                 />

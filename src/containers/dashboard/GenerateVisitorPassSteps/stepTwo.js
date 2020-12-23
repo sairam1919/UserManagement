@@ -16,6 +16,7 @@ const StepTwo = ({ handleGeneratePass, config, data }) => {
     }
 
     const handleSaveGeneratePass = () => {
+
         data.access_locations = JSON.stringify(accessLocations);
         let Zones = "";
         for (let i = 0; i < accessLocations.length; i++) {
@@ -26,6 +27,9 @@ const StepTwo = ({ handleGeneratePass, config, data }) => {
             }
         }
         data.zones = Zones;
+        data.userImage = userPhotoUrl;
+        data.userPassImage = '';
+        data.userIdProof = '';
         handleGeneratePass(data);
     }
 
@@ -53,7 +57,7 @@ const StepTwo = ({ handleGeneratePass, config, data }) => {
         } >
             < DialogContent >
                 < DialogContentText >
-                    < WebcamCapture dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture} />
+                    {/* < WebcamCapture dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture} /> */}
                     < CapturePhoto dataUrl={userPhotoUrl} handleCapture={handleUserPhotoCapture} /> {
                         zones.map(zone => (<
                             FormControlLabel value={JSON.stringify(zone)}

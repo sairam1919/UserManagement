@@ -13,10 +13,8 @@ export const MenuCard = ({menuLabel, menuIcon, menuClick}) => {
 
         <Grid
         item
-        lg={4}
-        sm={6}
-        xl={12}
-        xs={18}
+        sm={4}
+        xs={6}
         onClick={() => menuClick()}
       >
             <Card
