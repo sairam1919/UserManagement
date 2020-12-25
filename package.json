@@ -36,9 +36,8 @@
         "react-webcam": "^5.2.2",
         "redux": "^4.0.5",
         "uuid": "^8.3.1",
-        "webpack": "^2.2.0",
-        "webpack-dev-server": "^1.14.1",
-        "websocket": "^1.0.32"
+        "webpack": "^3.11.0",
+        "webpack-dev-server": "^1.14.1"
     },
     "scripts": {
         "start": "react-scripts start",

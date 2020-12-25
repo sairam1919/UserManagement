@@ -418,7 +418,7 @@ router.post("/usersPerLocation", (req, res) => {
         "%" +
         req.body.location +
         "%" +
-        "' && userpassinfo.pass_status = 'Active'",
+        "' && userpassinfo.pass_status = 'Active' && id_code = " + "'" + req.body.pass + "'",
         function(error, results, fields) {
             if (error) {
                 apiResponse.message = "Error while connecting database";
@@ -426,11 +426,29 @@ router.post("/usersPerLocation", (req, res) => {
                 apiResponse.result = error;
                 res.status(400).send(apiResponse);
             } else {
-                console.log("Inside the connection2", results);
-                apiResponse.statuscode = "200";
-                apiResponse.message = "Successfully Fetched the UserDetails";
-                apiResponse.result = results;
-                res.status(200).send(apiResponse);
+                if (results.length) {
+                    apiResponse.statuscode = "200";
+                    apiResponse.message = "Successfully Fetched the UserDetails";
+                    apiResponse.result = results;
+                    res.status(200).send(apiResponse);
+                } else {
+                    connection.query(
+                        "SELECT * FROM userpassinfo WHERE userpassinfo.id_code = " + "'" + req.body.pass + "'",
+                        function(error, results, fields) {
+                            if (error) {
+                                apiResponse.message = "Error while connecting database";
+                                apiResponse.statuscode = "400";
+                                apiResponse.result = error;
+                                res.status(400).send(apiResponse);
+                            } else {
+                                apiResponse.statuscode = "2001";
+                                apiResponse.message = "Successfully Fetched the UserDetails";
+                                apiResponse.result = results;
+                                res.status(200).send(apiResponse);
+                            }
+                        }
+                    );
+                }
             }
         }
     );

@@ -60,7 +60,6 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    console.log("Inside the GeneratePass Render", this.props.isGeneratePassOpen);
     return (
       <Container
         maxWidth={false}

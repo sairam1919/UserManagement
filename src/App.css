@@ -66,3 +66,22 @@
 .Login-ErrorMessage {
   color: red;
 }
+
+.MuiDrawer-paperAnchorRight {
+  left: auto;
+  right: 0;
+  width: 500px;
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 2px solid #6c757d;
+  width: 100%;
+}
+
+.MuiFormControlLabel-root {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
