@@ -10,17 +10,16 @@ import CloseIcon from '@material-ui/icons/Close';
 import { v4 as uuidv4 } from 'uuid';
 
 const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, empData, config }) => {
-    console.log('empData', empData)
     const [values, setValues] = useState({
-        UserName: empData.UserName || "",
-        MobileNo: empData.MobileNo || "",
+        UserName: empData ? empData.UserName : "",
+        MobileNo: empData ? empData.MobileNo : "",
         issuedBy: "",
         issuedDateTime: "",
         access_locations: {},
         inTime: "",
         outtime: "",
         userData: {},
-        role: empData.Role || '',
+        role: empData ? empData.Role : '',
         password: "",
         current_location: "",
         userPass: "",
@@ -29,10 +28,10 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
         userIdProofNumber: "",
         userPassImage: "",
         expiryDate: "NO EXPIRY",
-        first_name: empData.first_name || '',
-        last_name: empData.last_name || '',
+        first_name: empData ? empData.first_name : '',
+        last_name: empData ? empData.last_name : '',
         user_type: "",
-        id_code: empData.id_code || '',
+        id_code: empData ? empData.id_code : '',
         pass_status: "Active",
     });
 
@@ -61,9 +60,6 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                 "MobileNumber": values.MobileNo,
                 "issuedBy": JSON.parse(localStorage.getItem('userDetails')).UserName,
                 "issuedDateTime": newdate,
-                "access_locations": JSON.stringify({}),
-                "inTime": "",
-                "outtime": "",
                 "userData": JSON.stringify({ "email": values.email }),
                 "role": values.role,
                 "password": "password",
@@ -94,10 +90,10 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
 
     const options = JSON.parse(config).Roles;
 
-    let checkDataToEnable = true; 
-    if(values.userName && values.role && values.first_name && values.last_name && values.id_code && values.MobileNo) {
-        checkDataToEnable= false;
-    } 
+    let checkDataToEnable = true;
+    if (values.userName && values.role && values.first_name && values.last_name && values.id_code && values.MobileNo) {
+        checkDataToEnable = false;
+    }
     return (
         < Dialog open={isOpen} >
             < DialogTitle style={{ backgroundColor: 'rgb(54, 65, 83)', color: 'white', fontWeight: 500 }} >
@@ -209,7 +205,7 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                             onChange={handleChange}
                             value={values.role}
                             error={!values.role}
-                            >
+                        >
                             {
                                 options.map(option => (
                                     <option value={option.value} > { option.label} </option>
@@ -224,9 +220,9 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                     { backgroundColor: 'green', color: 'white' }
                 }
                     variant="contained"
-                    onClick={ checkDataToEnable ? null : handleSave}
+                    onClick={checkDataToEnable ? null : handleSave}
                     disabled={checkDataToEnable}
-                    > Save </Button>
+                > Save </Button>
             </DialogActions>
         </Dialog>
     );

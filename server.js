@@ -5,11 +5,10 @@ const http = require('http');
 const bodyParser = require('body-parser');
 var logger = require("morgan");
 var cors = require("cors");
-const fs = require("fs");
 
 // Get our API routes
-const employee = require('./routes/employee');
-const visitor = require('./routes/visitor');
+const employee = require('./server/routes/employee');
+const visitor = require('./server/routes/visitor');
 
 const app = express();
 
