@@ -6,7 +6,7 @@ const mysql = require("mysql");
 var connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "password",
+    password: "Sram@225",
     database: "usermanagement",
 });
 
@@ -16,7 +16,7 @@ let apiResponse = { message: "", result: "", statuscode: "" };
 router.get("/user", (req, res) => {
     connection.query(
         "SELECT * FROM visitor,userpassinfo WHERE visitor.UserName = userpassinfo.UserName",
-        function(error, results, fields) {
+        function (error, results, fields) {
             if (error) {
                 apiResponse.message = "Error while connecting database";
                 apiResponse.statuscode = "400";
@@ -36,11 +36,15 @@ router.get("/user", (req, res) => {
 //GET API to Fetch a Specific User Data
 router.get("/user/:id", (req, res) => {
     var query1 =
-        "SELECT * FROM visitor,userpassinfo WHERE employee.UserName=" +
+        "SELECT * FROM visitor,userpassinfo WHERE visitor.UserName=" +
         "'" +
-        req.body.userName +
+        req.params.id +
+        "'" +
+        " AND userpassinfo.UserName =" +
+        "'" +
+        req.params.id +
         "'";
-    connection.query(query1, function(error, results, fields) {
+    connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database";
             apiResponse.statuscode = "400";
@@ -62,10 +66,7 @@ router.post("/user", (req, res) => {
     let issuedBy = req.body.issuedBy;
     let issuedDateTime = req.body.issuedDateTime;
     let access_locations = req.body.access_locations;
-    let inTime = req.body.inTime;
-    let outTime = req.body.outtime;
     let userData = req.body.userData;
-    let Current_Location = "";
     let userPass = req.body.userPass;
     let userImage = req.body.userImage;
     let userIdProof = req.body.userIdProof;
@@ -80,7 +81,7 @@ router.post("/user", (req, res) => {
     let zones = req.body.zones;
 
     var query1 =
-        "INSERT INTO visitor ( UserName, MobileNo, IssuedBy, IssuedDateTime, access_locations, InTime, OutTime, UserData, Current_Location, first_name, last_name ) VALUES (" +
+        "INSERT INTO visitor ( UserName, MobileNo, IssuedBy, IssuedDateTime, access_locations, UserData, first_name, last_name ) VALUES (" +
         "'" +
         username +
         "'" +
@@ -102,19 +103,7 @@ router.post("/user", (req, res) => {
         "'" +
         ", " +
         "'" +
-        inTime +
-        "'" +
-        ",  " +
-        "'" +
-        outTime +
-        "'" +
-        ",  " +
-        "'" +
         userData +
-        "'" +
-        ", " +
-        "'" +
-        Current_Location +
         "'" +
         ", " +
         "'" +
@@ -125,7 +114,7 @@ router.post("/user", (req, res) => {
         last_name +
         "'" +
         " )";
-    connection.query(query1, function(error, results, fields) {
+    connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database";
             apiResponse.statuscode = "400";
@@ -178,7 +167,7 @@ router.post("/user", (req, res) => {
                 zones +
                 "'" +
                 " )";
-            connection.query(query2, function(error, results, fields) {
+            connection.query(query2, function (error, results, fields) {
                 if (error) {
                     apiResponse.message = "Error while connecting database";
                     apiResponse.statuscode = "400";
@@ -202,6 +191,7 @@ router.put("/user/:id", (req, res) => {
     let userData = req.body.userData;
     let first_name = req.body.first_name;
     let last_name = req.body.last_name;
+    let zones = req.body.zones;
 
     var query1 =
         "UPDATE visitor SET access_locations= " +
@@ -228,30 +218,48 @@ router.put("/user/:id", (req, res) => {
         "'" +
         req.params.id +
         "'";
-    connection.query(query1, function(error, results, fields) {
+    connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database";
             apiResponse.statuscode = "400";
             apiResponse.result = error;
             res.status(400).send(apiResponse);
         } else {
-            apiResponse.statuscode = "200";
-            apiResponse.message = "User Updated Successfully";
-            apiResponse.result = results;
-            res.status(200).send(apiResponse);
+            query1 = "UPDATE userpassinfo SET zones=  " +
+            "'" + zones + "'" +
+            " WHERE userpassinfo.UserName = " +
+            "'" + req.body.id + "'";
+            connection.query(query1, function (error, results, fields) {
+                if (error) {
+                    apiResponse.message = "Error while connecting database";
+                    apiResponse.statuscode = "400";
+                    apiResponse.result = error;
+                    res.status(400).send(apiResponse);
+                } else {
+                    apiResponse.statuscode = "200";
+                    apiResponse.message = "User Updated Successfully";
+                    apiResponse.result = results;
+                    res.status(200).send(apiResponse);
+                }
+            });
         }
     });
 });
 
 router.post("/updateUserInfo", (req, res) => {
-    var query1 =
-        "UPDATE visitor SET OutTime= " +
-        req.body.outTime +
-        " , InTime=  " +
-        req.body.inTime +
-        " WHERE UserName= " +
-        req.params.id;
-    connection.query(query1, function(error, results, fields) {
+    var query1 = '';
+    if (req.body.type === "in") {
+        query1 = "UPDATE userpassinfo SET InTime=  " +
+            "'" + req.body.time + "'" + "," + "Current_Location = " + "'" + req.body.location + "'" +
+            " WHERE userpassinfo.id_code = " +
+           "'" + req.body.pass + "'";
+    } else if (req.body.type === "out") {
+        query1 = "UPDATE userpassinfo SET OutTime=  " +
+            "'" + req.body.time + "'" + "," + "Current_Location = " + "" +
+            " WHERE userpassinfo.id_code = " +
+           "'" + req.body.pass + "'";
+    }
+    connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database";
             apiResponse.statuscode = "400";
