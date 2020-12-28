@@ -27,10 +27,15 @@ const GenerateVisitorPass = ({isOpen, handleClose, config}) => {
     const handleGeneratePass = (data) => {
       setValues({...values, passObject: data });
       setStep(3)
-      var url = Constants.GENERATE_PASS;
+   
+    }
+
+    const handleSaveGeneratePass = (data) => {
+      console.log(data);
+         var url = Constants.GENERATE_PASS;
       fetch(url, {
         method: "POST",
-        body: JSON.stringify(values.passObject),
+        body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
         },
@@ -49,10 +54,10 @@ const GenerateVisitorPass = ({isOpen, handleClose, config}) => {
             renderComponent = <StepOne handleNext={(e) => handleNext(e)} />
             break;
         case 2:
-            renderComponent = <StepTwo data={values.passObject} config = {config} handleGeneratePass={(e) => handleGeneratePass(e)} />
+            renderComponent = <StepTwo data={values.passObject} config = {config} handleGeneratePass={(data) => handleGeneratePass(data)} />
             break;
         case 3:
-          renderComponent =<StepSuccess data={values.passObject}  handleClose={handleClose}/>
+          renderComponent =<StepSuccess data={values.passObject}  handleSaveGeneratePass={(data) => handleSaveGeneratePass(data)}/>
           break;
           default: 
           renderComponent = <StepOne handleNext={handleNext} />
