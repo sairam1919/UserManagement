@@ -2,8 +2,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import { TextField, Button } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
-import ReactDatePicker from 'react-datepicker';
+import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Constants from '../../../Constants';
 
@@ -22,6 +21,7 @@ const StepOne = ({ handleNext }) => {
         userImage: "",
         userIdProof: "",
         userIdProofNumber: "",
+        userIdProofImage: "",
         userPassImage: "",
         expiryDate: "",
         first_name: "",
@@ -36,6 +36,7 @@ const StepOne = ({ handleNext }) => {
     });
 
     const handleChange = (event) => {
+        console.log(event.target.value)
         setValues({ ...values, [event.target.name]: event.target.value });
     }
 
@@ -85,6 +86,8 @@ const StepOne = ({ handleNext }) => {
                     }
                     variant="outlined"
                     name="UserName"
+                    value={values.UserName}
+                    error={!values.UserName}
                     onChange={handleChange}
                 />
                 <TextField
@@ -98,6 +101,8 @@ const StepOne = ({ handleNext }) => {
                     }
                     variant="outlined"
                     name="first_name"
+                    value={values.first_name}
+                    error={!values.first_name}
                     onChange={handleChange}
                 />
                 <TextField
@@ -111,6 +116,8 @@ const StepOne = ({ handleNext }) => {
                     }
                     variant="outlined"
                     name="last_name"
+                    value={values.last_name}
+                    error={!values.last_name}
                     onChange={handleChange}
                 />
                 <TextField
@@ -124,6 +131,8 @@ const StepOne = ({ handleNext }) => {
                     }
                     variant="outlined"
                     name="email"
+                    value={values.email}
+                    error={!values.email}
                     onChange={handleChange}
                 />
                 <TextField
@@ -137,6 +146,8 @@ const StepOne = ({ handleNext }) => {
                     }
                     variant="outlined"
                     name="MobileNumber"
+                    value={values.MobileNumber}
+                    error={!values.MobileNumber}
                     onChange={handleChange}
                 />
 
@@ -151,8 +162,10 @@ const StepOne = ({ handleNext }) => {
                     }
                     variant="outlined"
                     name="id_type"
+                    value={values.id_type}
+                    error={!values.id_type}
                     onChange={handleChange}
-                />
+                /> 
                 <TextField
                     label="ID Proof Number"
                     placeholder="Enter ID Proof Number"
@@ -164,6 +177,40 @@ const StepOne = ({ handleNext }) => {
                     }
                     variant="outlined"
                     name="userIdProofNumber"
+                    value={values.userIdProofNumber}
+                    error={!values.userIdProofNumber}
+                    onChange={handleChange}
+                />
+
+<TextField
+                    label="ID Proof File Upload"
+                    placeholder="Enter ID Proof File Upload"
+                    fullWidth margin="normal"
+                    InputLabelProps={
+                        {
+                            shrink: true,
+                            min: new Date().toDateString()
+                        }
+                    }
+                    variant="outlined"
+                    type="file"
+                    value={values.userIdProofImage}
+                    error={!values.userIdProofImage}
+                    onChange={handleChange}
+                />
+                 <TextField
+                    label="ID Proof Number"
+                    placeholder="Enter ID Proof Number"
+                    fullWidth margin="normal"
+                    InputLabelProps={
+                        {
+                            shrink: true,
+                        }
+                    }
+                    variant="outlined"
+                    name="userIdProofNumber"
+                    value={values.userIdProofNumber}
+                    error={!values.userIdProofNumber}
                     onChange={handleChange}
                 />
                 <TextField label="Address"
@@ -176,6 +223,8 @@ const StepOne = ({ handleNext }) => {
                     }
                     variant="outlined"
                     name="address"
+                    value={values.address}
+                    error={!values.address}
                     onChange={handleChange}
                 />
                 <TextField
@@ -189,6 +238,8 @@ const StepOne = ({ handleNext }) => {
                     }
                     variant="outlined"
                     name="representing"
+                    value={values.representing}
+                    error={!values.representing}
                     onChange={handleChange}
                 />
                 <TextField
@@ -202,6 +253,8 @@ const StepOne = ({ handleNext }) => {
                     }
                     variant="outlined"
                     name="purposeOfVisit"
+                    value={values.purposeOfVisit}
+                    error={!values.purposeOfVisit}
                     onChange={handleChange}
                 />
 
@@ -217,6 +270,8 @@ type="date"
                     }
                     variant="outlined"
                     name="expiryDate"
+                    value={values.expiryDate}
+                    error={!values.expiryDate}
                     onChange={handleChange}
                 />
             </DialogContentText>

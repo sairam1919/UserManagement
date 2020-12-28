@@ -17,14 +17,13 @@ let apiResponse = { message: "", result: "", statuscode: "" };
 router.get("/user", (req, res) => {
     connection.query(
         "SELECT * FROM employee,userpassinfo WHERE employee.UserName = userpassinfo.UserName",
-        function(error, results, fields) {
+        function (error, results, fields) {
             if (error) {
                 apiResponse.message = "Error while connecting database";
                 apiResponse.statuscode = "400";
                 apiResponse.result = error;
                 res.status(400).send(apiResponse);
             } else {
-                console.log("Inside the connection2", results);
                 apiResponse.statuscode = "200";
                 apiResponse.message = "Successfully Fetched the UserDetails";
                 apiResponse.result = results;
@@ -37,15 +36,15 @@ router.get("/user", (req, res) => {
 //GET API to Fetch a Specific User Data
 router.get("/user/:id", (req, res) => {
     var query1 =
-        "SELECT * FROM employee,userpassinfo WHERE UserName=" +
+        "SELECT * FROM employee,userpassinfo WHERE employee.UserName=" +
         "'" +
-        req.body.userName +
+        req.params.id +
         "'" +
         " AND userpassinfo.UserName =" +
         "'" +
-        UserName +
+        req.params.id +
         "'";
-    connection.query(query1, function(error, results, fields) {
+    connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database";
             apiResponse.statuscode = "400";
@@ -72,8 +71,7 @@ router.post("/login", (req, res) => {
         "'" +
         UserName +
         "'";
-    console.log("Query1", query1);
-    connection.query(query1, function(error, results, fields) {
+    connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database";
             apiResponse.statuscode = "400";
@@ -106,12 +104,9 @@ router.post("/user", (req, res) => {
     let issuedBy = req.body.issuedBy;
     let issuedDateTime = req.body.issuedDateTime;
     let access_locations = req.body.access_locations;
-    let inTime = req.body.inTime;
-    let outTime = req.body.outtime;
     let userData = req.body.userData;
     let role = req.body.role;
     let password = req.body.password;
-    let Current_Location = "";
     let userPass = req.body.userPass;
     let userImage = req.body.userImage;
     let userIdProof = req.body.userIdProof;
@@ -126,8 +121,8 @@ router.post("/user", (req, res) => {
     let zones = req.body.zones;
 
     connection.query(
-        "SELECT * FROM userpassinfo WHERE userpassinfo.id_code =" + id_code,
-        function(error, results, fields) {
+        "SELECT * FROM userpassinfo WHERE userpassinfo.id_code =" + "'" + id_code + "'" + " && userpassinfo.pass_status = 'Active'",
+        function (error, results, fields) {
             if (error) {
                 apiResponse.message = "Error while connecting database";
                 apiResponse.statuscode = "400";
@@ -141,7 +136,7 @@ router.post("/user", (req, res) => {
                     res.status(500).send(apiResponse);
                 } else {
                     var query1 =
-                        "INSERT INTO employee ( UserName, MobileNo, IssuedBy, IssuedDateTime, access_locations, InTime, OutTime, UserData, Role, password, Current_Location, first_name, last_name ) VALUES (" +
+                        "INSERT INTO employee ( UserName, MobileNo, IssuedBy, IssuedDateTime, access_locations, UserData, Role, password, first_name, last_name ) VALUES (" +
                         "'" +
                         username +
                         "'" +
@@ -163,14 +158,6 @@ router.post("/user", (req, res) => {
                         "'" +
                         ", " +
                         "'" +
-                        inTime +
-                        "'" +
-                        ",  " +
-                        "'" +
-                        outTime +
-                        "'" +
-                        ",  " +
-                        "'" +
                         userData +
                         "'" +
                         ",  " +
@@ -183,10 +170,6 @@ router.post("/user", (req, res) => {
                         "'" +
                         ", " +
                         "'" +
-                        Current_Location +
-                        "'" +
-                        ", " +
-                        "'" +
                         first_name +
                         "'" +
                         " , " +
@@ -194,7 +177,7 @@ router.post("/user", (req, res) => {
                         last_name +
                         "'" +
                         " )";
-                    connection.query(query1, function(error, results, fields) {
+                    connection.query(query1, function (error, results, fields) {
                         if (error) {
                             apiResponse.message = "Error while connecting database";
                             apiResponse.statuscode = "400";
@@ -247,7 +230,7 @@ router.post("/user", (req, res) => {
                                 zones +
                                 "'" +
                                 " )";
-                            connection.query(query2, function(error, results, fields) {
+                            connection.query(query2, function (error, results, fields) {
                                 if (error) {
                                     apiResponse.message = "Error while connecting database";
                                     apiResponse.statuscode = "400";
@@ -306,30 +289,7 @@ router.put("/user/:id", (req, res) => {
         "'" +
         req.params.id +
         "'";
-    connection.query(query1, function(error, results, fields) {
-        if (error) {
-            apiResponse.message = "Error while connecting database";
-            apiResponse.statuscode = "400";
-            apiResponse.result = error;
-            res.status(400).send(apiResponse);
-        } else {
-            apiResponse.statuscode = "200";
-            apiResponse.message = "User Updated Successfully";
-            apiResponse.result = results;
-            res.status(200).send(apiResponse);
-        }
-    });
-});
-
-router.post("/updateUserInfo", (req, res) => {
-    var query1 =
-        "UPDATE employee SET OutTime= " +
-        req.body.outTime +
-        " , InTime=  " +
-        req.body.inTime +
-        " WHERE UserName= " +
-        req.params.id;
-    connection.query(query1, function(error, results, fields) {
+    connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database";
             apiResponse.statuscode = "400";
@@ -351,7 +311,7 @@ router.put("/user/changePassword/:id", (req, res) => {
         "'" +
         req.params.id +
         "'";
-    connection.query(query1, function(error, results, fields) {
+    connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database";
             apiResponse.statuscode = "400";
@@ -375,7 +335,7 @@ router.put("/user/changePassword/:id", (req, res) => {
         "'" +
         req.params.id +
         "'";
-    connection.query(query2, function(error, results, fields) {
+    connection.query(query2, function (error, results, fields) {
         if (error) {
             console.log("Error while connecting database" + error);
             apiResponse.message = "Error while connecting database";
@@ -394,12 +354,12 @@ router.put("/user/changePassword/:id", (req, res) => {
 router.get("/fetchConfig", (req, res) => {
     fs.readFile(
         "config.json", { encoding: "utf8", flag: "r" },
-        function(err, data) {
+        function (err, data) {
             if (err) {
                 apiResponse.message = "Error While fetching the config";
                 apiResponse.statuscode = "400";
                 apiResponse.result = err;
-                res.status(400).send(JSON.parse(apiResponse));
+                res.status(400).send(apiResponse);
             } else {
                 apiResponse.message = "Config Fetched Successfully";
                 apiResponse.statuscode = "200";
@@ -419,7 +379,7 @@ router.post("/usersPerLocation", (req, res) => {
         req.body.location +
         "%" +
         "' && userpassinfo.pass_status = 'Active' && id_code = " + "'" + req.body.pass + "'",
-        function(error, results, fields) {
+        function (error, results, fields) {
             if (error) {
                 apiResponse.message = "Error while connecting database";
                 apiResponse.statuscode = "400";
@@ -428,13 +388,13 @@ router.post("/usersPerLocation", (req, res) => {
             } else {
                 if (results.length) {
                     apiResponse.statuscode = "200";
-                    apiResponse.message = "Successfully Fetched the UserDetails";
+                    apiResponse.message = "Successfully Fetched the UserDetails, Access Granted";
                     apiResponse.result = results;
                     res.status(200).send(apiResponse);
                 } else {
                     connection.query(
                         "SELECT * FROM userpassinfo WHERE userpassinfo.id_code = " + "'" + req.body.pass + "'",
-                        function(error, results, fields) {
+                        function (error, results, fields) {
                             if (error) {
                                 apiResponse.message = "Error while connecting database";
                                 apiResponse.statuscode = "400";
@@ -442,7 +402,7 @@ router.post("/usersPerLocation", (req, res) => {
                                 res.status(400).send(apiResponse);
                             } else {
                                 apiResponse.statuscode = "2001";
-                                apiResponse.message = "Successfully Fetched the UserDetails";
+                                apiResponse.message = "Successfully Fetched the UserDetails, Access Denied";
                                 apiResponse.result = results;
                                 res.status(200).send(apiResponse);
                             }

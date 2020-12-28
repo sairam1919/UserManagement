@@ -1,0 +1,7 @@
+CREATE EVENT pass_statuc_check
+    ON SCHEDULE
+      EVERY 1 HOUR
+    COMMENT 'checks the pass activity status'
+    DO
+      UPDATE usermanagement.userpassinfo SET pass_status = 'Expierd' WHERE expired_date = CURDATE()
+	;
