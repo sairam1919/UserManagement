@@ -296,10 +296,23 @@ router.put("/user/:id", (req, res) => {
             apiResponse.result = error;
             res.status(400).send(apiResponse);
         } else {
-            apiResponse.statuscode = "200";
-            apiResponse.message = "User Updated Successfully";
-            apiResponse.result = results;
-            res.status(200).send(apiResponse);
+            query1 = "UPDATE userpassinfo SET zones=  " +
+            "'" + zones + "'" +
+            " WHERE userpassinfo.UserName = " +
+            "'" + req.body.id + "'";
+            connection.query(query1, function (error, results, fields) {
+                if (error) {
+                    apiResponse.message = "Error while connecting database";
+                    apiResponse.statuscode = "400";
+                    apiResponse.result = error;
+                    res.status(400).send(apiResponse);
+                } else {
+                    apiResponse.statuscode = "200";
+                    apiResponse.message = "User Updated Successfully";
+                    apiResponse.result = results;
+                    res.status(200).send(apiResponse);
+                }
+            });
         }
     });
 });
