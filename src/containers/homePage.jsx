@@ -24,7 +24,6 @@ const HomePage = (props) => {
     setValues({ ...values, isChangePassword: true });
   };
   const generatePass = () => {
-    console.log("Inside the GeneratePass Dashboard");
     setValues({ ...values, isGeneratePassOpen: true });
   };
 

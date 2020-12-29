@@ -7,7 +7,7 @@ const fs = require("fs");
 var connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "password",
+    password: "Sram@225",
     database: "usermanagement",
 });
 
@@ -255,7 +255,7 @@ router.post("/user", (req, res) => {
 router.put("/user/:id", (req, res) => {
     let mobilenumber = req.body.MobileNumber;
     let access_locations = req.body.access_locations;
-    let userData = req.body.userData;
+    let userData = req.body.UserData;
     let first_name = req.body.first_name;
     let last_name = req.body.last_name;
     let role = req.body.role;

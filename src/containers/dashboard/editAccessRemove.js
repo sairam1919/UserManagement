@@ -20,8 +20,6 @@ const EditAccessRemove = ({ isOpen, handleClose, visitData, handleAssignRemove, 
       for(let j = 0; j < zones.length; j++ ) {
         if(JSON.parse(visitData.access_locations)[i].name === zones[j].name) {
           zones[i].checked = true
-        } else{
-          zones[i].checked = false
         }
       }
     }
@@ -29,13 +27,10 @@ const EditAccessRemove = ({ isOpen, handleClose, visitData, handleAssignRemove, 
   },[]);
 
   const handleCheckBox = (event) => {
-    alert("handleCheckBox Triggerd");
     let data = accessLocations;
     if (document.getElementById([event.target.name]).checked) {
-      alert("handleCheckBox Triggerd");
       data.push(JSON.parse(event.target.value));
     } else {
-      alert("handleCheckBox Triggerd");
       for (var i = data.length - 1; i >= 0; --i) {
         if (data[i].name == [event.target.name]) {
           data.splice(i, 1);
@@ -46,7 +41,7 @@ const EditAccessRemove = ({ isOpen, handleClose, visitData, handleAssignRemove, 
   }
 
   const handleAssignRmv = () => {
-    visitData.access_locations = accessLocations;
+    visitData.access_locations = JSON.stringify(accessLocations);
     handleAssignRemove(visitData);
   }
   

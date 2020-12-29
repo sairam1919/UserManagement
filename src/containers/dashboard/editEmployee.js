@@ -42,11 +42,12 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
     const handleSave = () => {
         let addUserObject = {};
         let Zones = "";
-        for (let i = 0; i < config.Zones.length; i++) {
+        let configZones = JSON.parse(config).Zones;
+        for (let i = 0; i < configZones.length; i++) {
             if (i === 0) {
-                Zones += config.Zones[i].name;
+                Zones += configZones[i].name;
             } else {
-                Zones += "," + config.Zones[i].name;
+                Zones += "," + configZones[i].name;
             }
         }
         if (!isEditUser) {
@@ -57,11 +58,11 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
             let newdate = year + "-" + month + "-" + day;
             addUserObject = {
                 "UserName": values.UserName,
-                "MobileNumber": values.MobileNo,
+                "MobileNo": values.MobileNo,
                 "issuedBy": JSON.parse(localStorage.getItem('userDetails')).UserName,
                 "issuedDateTime": newdate,
-                "userData": JSON.stringify({ "email": values.email }),
-                "role": values.role,
+                "userData": JSON.stringify({}),
+                "Role": values.role,
                 "password": "password",
                 "current_location": "",
                 "userPass": uuidv4(),
@@ -72,16 +73,15 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                 "expiryDate": "NO EXPIRY",
                 "first_name": values.first_name,
                 "last_name": values.last_name,
-                "user_type": "employee",
                 "id_code": values.id_code,
                 "pass_status": "Active",
-                "access_locations": JSON.stringify(config.Zones),
+                "access_locations": JSON.stringify(JSON.parse(config).Zones),
                 "zones": Zones
             }
         } else {
             addUserObject = empData;
-            addUserObject.MobileNumber = values.MobileNumber;
-            addUserObject.role = values.role;
+            addUserObject.MobileNo = values.MobileNo;
+            addUserObject.Role = values.role;
             addUserObject.first_name = values.first_name;
             addUserObject.last_name = values.last_name;
         }

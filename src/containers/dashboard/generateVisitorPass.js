@@ -4,77 +4,77 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import React, { useState, useEffect } from 'react';
-import { FormControl , Select, MenuItem, InputLabel, TextField, Button} from '@material-ui/core';
+import { FormControl, Select, MenuItem, InputLabel, TextField, Button } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 import StepOne from './GenerateVisitorPassSteps/stepOne';
 import StepTwo from './GenerateVisitorPassSteps/stepTwo';
-import StepSuccess  from './GenerateVisitorPassSteps/stepSuccess';
+import StepSuccess from './GenerateVisitorPassSteps/stepSuccess';
 import Constants from '../../Constants';
 
-const GenerateVisitorPass = ({isOpen, handleClose, config}) => {
-    const [ step, setStep] = useState(1);
-    const [data, setData] = useState();
-    const [values, setValues] = useState({
-      passObject: {},
-    });
+const GenerateVisitorPass = ({ isOpen, handleClose, config }) => {
+  const [step, setStep] = useState(1);
+  const [data, setData] = useState();
+  const [values, setValues] = useState({
+    passObject: {},
+  });
 
-    const handleNext = (generatePassObject) => {
-        setStep(2);
-        setValues({...values, passObject: generatePassObject });
-    }
+  const handleNext = (generatePassObject) => {
+    setStep(2);
+    setValues({ ...values, passObject: generatePassObject });
+  }
 
-    const handleGeneratePass = (data) => {
-      setValues({...values, passObject: data });
-      setStep(3)
-   
-    }
+  const handleGeneratePass = (data) => {
+    setValues({ ...values, passObject: data });
+    setStep(3)
 
-    const handleSaveGeneratePass = (data) => {
-      console.log(data);
-         var url = Constants.GENERATE_PASS;
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
+  }
+
+  const handleSaveGeneratePass = (data) => {
+    console.log("handleSaveGeneratePass: ", data);
+    let url = Constants.GENERATE_PASS;
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
       })
-        .then((res) => {
-            return res.json();
-        })
-        .then((data) => {
-          alert(data.message);
-        });
-    }
+      .then((data) => {
+        alert(data.message);
+      });
+  }
 
-    let renderComponent = null;
-    switch(step) {
-        case 1 : 
-            renderComponent = <StepOne handleNext={(e) => handleNext(e)} />
-            break;
-        case 2:
-            renderComponent = <StepTwo data={values.passObject} config = {config} handleGeneratePass={(data) => handleGeneratePass(data)} />
-            break;
-        case 3:
-          renderComponent =<StepSuccess data={values.passObject}  handleSaveGeneratePass={(data) => handleSaveGeneratePass(data)}/>
-          break;
-          default: 
-          renderComponent = <StepOne handleNext={handleNext} />
-            break;
-    }
+  let renderComponent = null;
+  switch (step) {
+    case 1:
+      renderComponent = <StepOne handleNext={(e) => handleNext(e)} />
+      break;
+    case 2:
+      renderComponent = <StepTwo data={values.passObject} config={config} handleGeneratePass={(data) => handleGeneratePass(data)} />
+      break;
+    case 3:
+      renderComponent = <StepSuccess data={values.passObject} handleSaveGeneratePass={(data) => handleSaveGeneratePass(data)} />
+      break;
+    default:
+      renderComponent = <StepOne handleNext={handleNext} />
+      break;
+  }
 
-    
-    return (
-        <Dialog open={isOpen}>
-        <DialogTitle style={{ backgroundColor: 'rgb(54, 65, 83)', color: 'white', fontWeight: 500 }}>
-          Generate Visitor Pass
+
+  return (
+    <Dialog open={isOpen}>
+      <DialogTitle style={{ backgroundColor: 'rgb(54, 65, 83)', color: 'white', fontWeight: 500 }}>
+        Generate Visitor Pass
         <Fab color="primary" aria-label="add" style={{ position: "absolute", right: 20, top: 2, backgroundColor: "grey" }} onClick={handleClose}>
           <CloseIcon />
         </Fab>
-        </DialogTitle>
-        {renderComponent}
-      </Dialog>
-    );
+      </DialogTitle>
+      {renderComponent}
+    </Dialog>
+  );
 }
 export default GenerateVisitorPass; 

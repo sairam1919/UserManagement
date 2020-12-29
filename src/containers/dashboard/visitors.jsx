@@ -111,8 +111,7 @@ const Visitors = ({ handleMenuClick, config }) => {
   let rows = visitorInfo;
   const uniqueLocations = [...new Set(visitorInfo.map(item => item.Current_Location))];
   let zones = JSON.parse(config).Zones;
-
-  console.log(uniqueLocations)
+  
   if (searchValue) {
     rows = rows.filter((item) => {
       return (

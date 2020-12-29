@@ -119,7 +119,7 @@ const[ accessLocations, setAccessLocations] =useState({});
   }
 
   const handleAssignRemove = (data) => {
-    var url = Constants.UPDATE_VISITOR + data.UserName;
+    var url = Constants.UPDATE_EMPLOYEE + data.UserName;
     fetch(url, {
       method: "PUT",
       body: JSON.stringify(data),

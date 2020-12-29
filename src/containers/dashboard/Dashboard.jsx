@@ -18,7 +18,6 @@ class Dashboard extends React.Component {
     this.props.handleMenuClick(menu);
   };
   generatePass = () => {
-    console.log("Inside the GeneratePass Dashboard");
     this.props.generatePass();
   };
 

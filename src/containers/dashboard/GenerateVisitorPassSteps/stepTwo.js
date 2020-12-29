@@ -9,14 +9,13 @@ const StepTwo = ({ handleGeneratePass, config, data }) => {
     const [userPhotoUrl, setUserPhotoUrl] = useState('');
     const [accessLocations, setAccessLocations] = useState([]);
     // const [idProofPhotoUrl, setIdProofPhotoUrl] = useState('');
+    let zones = JSON.parse(config).Zones;
 
     const handleUserPhotoCapture = (dataUrl) => {
         setUserPhotoUrl(dataUrl);
-        console.log(dataUrl)
     }
 
     const handleSaveGeneratePass = () => {
-
         data.access_locations = JSON.stringify(accessLocations);
         let Zones = "";
         for (let i = 0; i < accessLocations.length; i++) {
@@ -39,7 +38,6 @@ const StepTwo = ({ handleGeneratePass, config, data }) => {
             data.push(JSON.parse(event.target.value));
         } else {
             for (var i = data.length - 1; i >= 0; --i) {
-                console.log("Inside the for loop", data[i], [event.target.name]);
                 if (data[i].name == [event.target.name]) {
                     data.splice(i, 1);
                 }
@@ -47,10 +45,6 @@ const StepTwo = ({ handleGeneratePass, config, data }) => {
         }
         setAccessLocations(data)
     }
-    // const handleIdProofPhotoCapture = (dataUrl) => {
-    //     setIdProofPhotoUrl(dataUrl);
-    // }
-    let zones = JSON.parse(config).Zones;
     return (
         < div style={
             { width: 650, overflow: "hidden" }
