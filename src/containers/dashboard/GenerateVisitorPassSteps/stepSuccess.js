@@ -30,7 +30,7 @@ const StepSuccess = ({ data, handleSaveGeneratePass }) => {
     }
 
     return (
-        <div style={{ width: 650, overflo: "hidden" }}>
+        <div>
             <iframe id="ifmcontentstoprint" title="print" style={{height: '0px', width: '0px', position: 'absolute'}} />
             <DialogContent >
                 <DialogContentText id="table-data-container" >
