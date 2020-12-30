@@ -1,11 +1,10 @@
-import React, {useEffect, useState } from 'react';
+import React from 'react';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import { Button, Paper, Grid, DialogContent } from '@material-ui/core';
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
-// import { useQRCode } from 'react-qrcode';
-// import { QRCode } from 'react-qrcode';
-import QRCode from "react-qr-code";
+import {  toJpeg  } from 'html-to-image';
+// import QRCode from "react-qr-code";
+var Barcode = require('react-barcode');
 const StepSuccess = ({ data, handleSaveGeneratePass }) => {
     const printTable = () => {
         var content = document.getElementById("table-data-container");
@@ -17,19 +16,7 @@ const StepSuccess = ({ data, handleSaveGeneratePass }) => {
         pri.focus();
         pri.print();
       };
-      const [passImage, setPassImage] = useState();
-    useEffect(() => {
-        toJpeg(document.getElementById('table-data-container'), { quality: 0.95 })
-  .then(function (dataUrl) {
-    // var link = document.createElement('a');
-    // link.download = 'my-image-name.jpeg';
-    // link.href = dataUrl;
-    // link.click();`
-    console.log(dataUrl)
-    setPassImage(dataUrl);
-  });
-    },[])
-
+   
     const handleSave = () => {
         toJpeg(document.getElementById('table-data-container'), { quality: 0.95 })
         .then(function (dataUrl) {
@@ -43,17 +30,17 @@ const StepSuccess = ({ data, handleSaveGeneratePass }) => {
     }
 
     return (
-        <div style={{ width: 650, overflo: "hidden" }}>
-                  <iframe id="ifmcontentstoprint" style={{height: '0px', width: '0px', position: 'absolute'}}></iframe>
-
+        <div>
+            <iframe id="ifmcontentstoprint" title="print" style={{height: '0px', width: '0px', position: 'absolute'}} />
             <DialogContent >
                 <DialogContentText id="table-data-container" >
                     <Grid container spacing={1} component={Paper}>
                         <Grid item xs={6}>
-                            <img src={data.userImage} style={{ height: 256, width: 256 }} />
+                            <img src={data.userImage} style={{ height: 256, width: 256 }} alt="" />
                         </Grid>
                         <Grid item xs={6}>
-                        <QRCode value={data.id_code} style={{ height: 256, width: 256 }}/>
+                        <Barcode value={data.id_code} width={0.5} height={50} displayValue={false} style={{position: 'absolute'}}/>
+                        {/* <QRCode value={data.id_code} style={{ height: 256, width: 256 }}/> */}
                         </Grid>
                         <Grid item xs={6}>
                             <strong>Full Name</strong> : {data.UserName}
