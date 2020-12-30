@@ -35,6 +35,8 @@ const StepOne = ({ handleNext }) => {
         purposeOfVisit: ''
     });
 
+    const [ image, setImage] = useState();
+
     const handleChange = (event) => {
         console.log(event.target.value)
         setValues({ ...values, [event.target.name]: event.target.value });
@@ -59,8 +61,9 @@ const StepOne = ({ handleNext }) => {
             "current_location": "",
             "userPass": uuidv4(),
             "userImage": Constants.USER_IMAGE,
-            "userIdProof": Constants.USER_IMAGE,
+            "userIdProof": values.userIdProof,
             "userIdProofNumber": values.userIdProofNumber,
+            "userIdProofImage": image,
             "userPassImage": Constants.USER_IMAGE,
             "expiryDate": values.expiryDate,
             "first_name": values.first_name,
@@ -72,6 +75,26 @@ const StepOne = ({ handleNext }) => {
         }
         handleNext(generatePassObject);
     }
+
+    const handleFileRead = async (event) => {
+        const file = event.target.files[0]
+        setValues({...values, userIdProofImage: event.target.value})
+        const base64 = await convertBase64(file)
+        setImage(base64);
+      }
+
+      const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(file)
+          fileReader.onload = () => {
+            resolve(fileReader.result);
+          }
+          fileReader.onerror = (error) => {
+            reject(error);
+          }
+        })
+      }
     return (<div>
         <DialogContent>
             <DialogContentText style={{ textAlign: 'center' }} >
@@ -196,23 +219,9 @@ const StepOne = ({ handleNext }) => {
                     type="file"
                     value={values.userIdProofImage}
                     error={!values.userIdProofImage}
-                    onChange={handleChange}
+                    onChange={handleFileRead}
                 />
-                 <TextField
-                    label="ID Proof Number"
-                    placeholder="Enter ID Proof Number"
-                    fullWidth margin="normal"
-                    InputLabelProps={
-                        {
-                            shrink: true,
-                        }
-                    }
-                    variant="outlined"
-                    name="userIdProofNumber"
-                    value={values.userIdProofNumber}
-                    error={!values.userIdProofNumber}
-                    onChange={handleChange}
-                />
+                {/* <img src={values.userIdProofImage} style={{ height: 100, width: 100}} /> */}
                 <TextField label="Address"
                     placeholder="Enter Address"
                     fullWidth margin="normal"

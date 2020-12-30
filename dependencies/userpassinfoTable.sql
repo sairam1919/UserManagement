@@ -1,10 +1,10 @@
 CREATE TABLE usermanagement.`userpassinfo` (
   `UserPass` varchar(50) NOT NULL,
   `UserName` varchar(50) NOT NULL,
-  `UserImage` text,
-  `UserIDProof` text,
+  `UserImage` longtext,
+  `UserIDProof` longtext,
   `UserIDProofNumber` varchar(100) DEFAULT NULL,
-  `PassImage` text,
+  `PassImage` longtext,
   `ExpairyDate` varchar(250) NOT NULL,
   `user_type` varchar(45) NOT NULL,
   `id_code` varchar(250) NOT NULL,
@@ -16,4 +16,3 @@ CREATE TABLE usermanagement.`userpassinfo` (
   PRIMARY KEY (`UserPass`),
   UNIQUE KEY `UserPass_UNIQUE` (`UserPass`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-

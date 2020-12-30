@@ -100,12 +100,12 @@ router.post("/login", (req, res) => {
 //POST API
 router.post("/user", (req, res) => {
     let username = req.body.UserName;
-    let mobilenumber = req.body.MobileNumber;
+    let mobilenumber = req.body.MobileNo;
     let issuedBy = req.body.issuedBy;
     let issuedDateTime = req.body.issuedDateTime;
     let access_locations = req.body.access_locations;
     let userData = req.body.userData;
-    let role = req.body.role;
+    let role = req.body.Role;
     let password = req.body.password;
     let userPass = req.body.userPass;
     let userImage = req.body.userImage;
@@ -255,7 +255,7 @@ router.post("/user", (req, res) => {
 router.put("/user/:id", (req, res) => {
     let mobilenumber = req.body.MobileNumber;
     let access_locations = req.body.access_locations;
-    let userData = req.body.userData;
+    let userData = req.body.UserData;
     let first_name = req.body.first_name;
     let last_name = req.body.last_name;
     let role = req.body.role;
@@ -296,10 +296,23 @@ router.put("/user/:id", (req, res) => {
             apiResponse.result = error;
             res.status(400).send(apiResponse);
         } else {
-            apiResponse.statuscode = "200";
-            apiResponse.message = "User Updated Successfully";
-            apiResponse.result = results;
-            res.status(200).send(apiResponse);
+            query1 = "UPDATE userpassinfo SET zones=  " +
+            "'" + zones + "'" +
+            " WHERE userpassinfo.UserName = " +
+            "'" + req.body.id + "'";
+            connection.query(query1, function (error, results, fields) {
+                if (error) {
+                    apiResponse.message = "Error while connecting database";
+                    apiResponse.statuscode = "400";
+                    apiResponse.result = error;
+                    res.status(400).send(apiResponse);
+                } else {
+                    apiResponse.statuscode = "200";
+                    apiResponse.message = "User Updated Successfully";
+                    apiResponse.result = results;
+                    res.status(200).send(apiResponse);
+                }
+            });
         }
     });
 });

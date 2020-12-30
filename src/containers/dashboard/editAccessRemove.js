@@ -11,42 +11,60 @@ import CloseIcon from '@material-ui/icons/Close';
 const EditAccessRemove = ({ isOpen, handleClose, visitData, handleAssignRemove, config }) => {
   const [accessLocations, setAccessLocations] = useState([]);
   const [zones, setZones] = useState([]);
-  const [isChecked, setIsChecked] = useState();
-
+  
   useEffect(() => {
-    setAccessLocations(JSON.parse(visitData.access_locations));
     let zones = JSON.parse(config).Zones;
-    for(let i = 0; i < JSON.parse(visitData.access_locations).length; i++) {
+    let access_locations = JSON.parse(visitData.access_locations);
+    for(let i = 0; i < access_locations.length; i++) {
       for(let j = 0; j < zones.length; j++ ) {
-        if(JSON.parse(visitData.access_locations)[i].name === zones[j].name) {
-          zones[i].checked = true
-        } else{
-          zones[i].checked = false
-        }
+        if(access_locations[i].name === zones[j].name) {
+          zones[j].checked = true
+        } 
       }
     }
-    setZones(zones)
+    setZones(zones);
+    setAccessLocations(JSON.parse(visitData.access_locations));
+
   },[]);
 
   const handleCheckBox = (event) => {
-    alert("handleCheckBox Triggerd");
     let data = accessLocations;
-    if (document.getElementById([event.target.name]).checked) {
-      alert("handleCheckBox Triggerd");
+    if (event.target.checked) {  
       data.push(JSON.parse(event.target.value));
     } else {
-      alert("handleCheckBox Triggerd");
-      for (var i = data.length - 1; i >= 0; --i) {
-        if (data[i].name == [event.target.name]) {
-          data.splice(i, 1);
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].name === event.target.name) {
+          console.log(data[i].name, event.target.name)
+          data = data.filter( item => item.name !== event.target.name );
         }
       }
     }
+    let zones = JSON.parse(config).Zones;
+    let _zones =[];
+    zones.forEach((zone)=> {
+      console.log(data ,zone, data.filter((item) => { if(item.name.toString() === zone.name.toString()) {return true } else {return false}}))
+      if(data.length &&  data.filter((item) => { if(item.name.toString() === zone.name.toString()) {return true } else {return false}}).length) {
+        console.log(true)
+        const _zone = {
+          ...zone,
+          checked: true
+        };
+        _zones.push(_zone);
+      } else {
+        console.log(false)
+        const _zone = {
+          ...zone,
+          checked: false
+        };
+        _zones.push(_zone);
+      }
+    })
+    setZones(_zones)
     setAccessLocations(data)
   }
 
   const handleAssignRmv = () => {
-    visitData.access_locations = accessLocations;
+    visitData.access_locations = JSON.stringify(accessLocations);
     handleAssignRemove(visitData);
   }
   
@@ -61,16 +79,24 @@ const EditAccessRemove = ({ isOpen, handleClose, visitData, handleAssignRemove, 
       <DialogContent>
         <DialogContentText style={{ textAlign: 'center' }}>
 
-          {zones.map(module => (
-            <FormControl component="fieldset">
+          {zones.map((module, index) => (
+            <FormControl component="fieldset" key={`${module.name}` + 'control'}>
               <FormControlLabel
+                key={`${module.name} + ${index}`}
                 value={JSON.stringify(module)}
-                control={<Checkbox color="primary" id={module.name} checked = {module.checked} />}
+                control={<Checkbox color="primary" id={module.name} checked={module.checked} />}
                 label={module.name}
                 name={module.name}
                 onChange={handleCheckBox}
                 labelPlacement="end"
               />
+              {/* <input
+              type="checkbox"
+              key={module.name}
+              value={JSON.stringify(module)}
+              name={module.name}
+              checked={module.checked} />
+              {module.name} */}
             </FormControl>
           ))
           }
