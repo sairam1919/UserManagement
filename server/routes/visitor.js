@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
+const logger = require("morgan");
 
 //Initialling connection string
 var connection = mysql.createConnection({
@@ -226,9 +227,9 @@ router.put("/user/:id", (req, res) => {
             res.status(400).send(apiResponse);
         } else {
             query1 = "UPDATE userpassinfo SET zones=  " +
-            "'" + zones + "'" +
-            " WHERE userpassinfo.UserName = " +
-            "'" + req.body.id + "'";
+                "'" + zones + "'" +
+                " WHERE userpassinfo.UserName = " +
+                "'" + req.body.id + "'";
             connection.query(query1, function (error, results, fields) {
                 if (error) {
                     apiResponse.message = "Error while connecting database";
@@ -247,18 +248,109 @@ router.put("/user/:id", (req, res) => {
 });
 
 router.post("/updateUserInfo", (req, res) => {
-    var query1 = '';
-    if (req.body.type === "in") {
-        query1 = "UPDATE userpassinfo SET InTime=  " +
-            "'" + req.body.time + "'" + "," + "Current_Location = " + "'" + req.body.location + "'" +
-            " WHERE userpassinfo.id_code = " +
-           "'" + req.body.pass + "'";
-    } else if (req.body.type === "out") {
-        query1 = "UPDATE userpassinfo SET OutTime=  " +
-            "'" + req.body.time + "'" + "," + "Current_Location = " + "" +
-            " WHERE userpassinfo.id_code = " +
-           "'" + req.body.pass + "'";
-    }
+    var query1 =
+        "SELECT * FROM userpassinfo WHERE userpassinfo.id_code =" +
+        "'" +
+        req.body.pass +
+        "'" + " AND userpassinfo.pass_status = 'Active'";
+    connection.query(query1, function (error, results, fields) {
+        if (error) {
+            apiResponse.message = "Error while connecting database";
+            apiResponse.statuscode = "400";
+            apiResponse.result = error;
+            res.status(400).send(apiResponse);
+        } else {
+            let resp = JSON.parse(JSON.stringify(results));
+            if (req.body.type === "in") {
+                query1 = "UPDATE userpassinfo SET InTime=  " +
+                    "'" + req.body.time + "'" + "," + "Current_Location = " + "'" + req.body.location + "'" +
+                    " WHERE userpassinfo.id_code = " +
+                    "'" + req.body.pass + "'";
+            } else if (req.body.type === "out") {
+                query1 = "UPDATE userpassinfo SET OutTime=  " +
+                    "'" + req.body.time + "'" + "," + "Current_Location = " + "" +
+                    " WHERE userpassinfo.id_code = " +
+                    "'" + req.body.pass + "'";
+            }
+            connection.query(query1, function (error, results, fields) {
+                if (error) {
+                    apiResponse.message = "Error while connecting database";
+                    apiResponse.statuscode = "400";
+                    apiResponse.result = error;
+                    res.status(400).send(apiResponse);
+                } else {
+                    let UserName = resp[0].UserName;
+                    let query2 = "INSERT INTO history ( UserName,id_code,activity,location,timestamp) VALUES (" +
+                        "'" +
+                        UserName +
+                        "'" +
+                        ",  " +
+                        "'" +
+                        req.body.pass +
+                        "'" +
+                        ",  " +
+                        "'" +
+                        req.body.type +
+                        "'" +
+                        ",  " +
+                        "'" +
+                        req.body.location +
+                        "'" +
+                        ",  " +
+                        "'" +
+                        req.body.time +
+                        "'" +
+                        " )";
+                    connection.query(
+                        query2,
+                        function (error, results, fields) {
+                            if (error) {
+                                apiResponse.message = "User Updated Successfully, Error while updating the History";
+                                apiResponse.statuscode = "400";
+                                apiResponse.result = error;
+                                res.status(400).send(apiResponse);
+                            } else {
+                                apiResponse.statuscode = "200";
+                                apiResponse.message = "User Updated Successfully, Successfully Updated the History";
+                                apiResponse.result = results;
+                                res.status(200).send(apiResponse);
+                            }
+                        }
+                    );
+                }
+            });
+        }
+    });
+
+});
+
+//GET API to Fetch all Users
+router.get("/history", (req, res) => {
+    connection.query(
+        "SELECT * FROM history",
+        function (error, results, fields) {
+            if (error) {
+                apiResponse.message = "Error while connecting database";
+                apiResponse.statuscode = "400";
+                apiResponse.result = error;
+                res.status(400).send(apiResponse);
+            } else {
+                apiResponse.statuscode = "200";
+                apiResponse.message = "Successfully Fetched the History";
+                apiResponse.result = results;
+                res.status(200).send(apiResponse);
+            }
+        }
+    );
+});
+
+//GET API to Fetch a Specific User Data
+router.get("/history/:id", (req, res) => {
+    var query1 =
+        "SELECT * FROM history WHERE history.UserName=" +
+        "'" +
+        req.params.id +
+        "'";
     connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database";
@@ -267,7 +359,7 @@ router.post("/updateUserInfo", (req, res) => {
             res.status(400).send(apiResponse);
         } else {
             apiResponse.statuscode = "200";
-            apiResponse.message = "User Updated Successfully";
+            apiResponse.message = "Successfully Fetched the History";
             apiResponse.result = results;
             res.status(200).send(apiResponse);
         }
