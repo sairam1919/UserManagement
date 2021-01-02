@@ -65,6 +65,15 @@ const EditAccessRemove = ({ isOpen, handleClose, visitData, handleAssignRemove, 
 
   const handleAssignRmv = () => {
     visitData.access_locations = JSON.stringify(accessLocations);
+    let Zones = "";
+    for (let i = 0; i < accessLocations.length; i++) {
+      if (i === 0) {
+          Zones += accessLocations[i].name;
+      } else {
+          Zones += "," + accessLocations[i].name;
+      }
+  }
+  visitData.zones = Zones;
     handleAssignRemove(visitData);
   }
   
