@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
 const fs = require("fs");
+const crypto = require('crypto');
+const algorithm = 'aes256';
+const key = 'password';
 
 //Initialling connection string
 var connection = mysql.createConnection({
@@ -61,7 +64,6 @@ router.get("/user/:id", (req, res) => {
 
 router.post("/login", (req, res) => {
     let UserName = req.body.userName;
-    let Password = req.body.password;
     let query1 =
         "SELECT * FROM employee,userpassinfo WHERE employee.UserName=" +
         "'" +
@@ -78,18 +80,27 @@ router.post("/login", (req, res) => {
             apiResponse.result = error;
             res.status(400).send(apiResponse);
         } else {
-            if (
-                results.length &&
-                results[0].UserName.toLowerCase() === UserName.toLowerCase() &&
-                results[0].password === Password
-            ) {
-                apiResponse.statuscode = "200";
-                apiResponse.message = "User Authenticated Successfully";
-                apiResponse.result = results[0];
-                res.status(200).send(apiResponse);
+            if (results.length) {
+                let decipher = crypto.createDecipher(algorithm, key);
+                let Password = decipher.update(results[0].password, 'hex', 'utf8') + decipher.final('utf8');
+                if (
+                    results[0].UserName.toLowerCase() === UserName.toLowerCase() &&
+                    Password === req.body.password
+                ) {
+                    apiResponse.statuscode = "200";
+                    apiResponse.message = "User Authenticated Successfully";
+                    apiResponse.result = results[0];
+                    res.status(200).send(apiResponse);
+                } else {
+                    apiResponse.statuscode = "400";
+                    apiResponse.message = "Unable to Authenticate the User";
+                    apiResponse.result = "";
+                    res.status(500).send(apiResponse);
+                }
+
             } else {
                 apiResponse.statuscode = "400";
-                apiResponse.message = "Unable to Authenticate the User";
+                apiResponse.message = "Unable to Authenticate the User, User not available";
                 apiResponse.result = "";
                 res.status(500).send(apiResponse);
             }
@@ -119,6 +130,9 @@ router.post("/user", (req, res) => {
     let id_code = req.body.id_code;
     let pass_status = req.body.pass_status;
     let zones = req.body.zones;
+
+    var cipher = crypto.createCipher(algorithm, key);
+    password = cipher.update(password, 'utf8', 'hex') + cipher.final('hex');
 
     connection.query(
         "SELECT * FROM userpassinfo WHERE userpassinfo.id_code =" + "'" + id_code + "'" + " && userpassinfo.pass_status = 'Active'",
@@ -298,9 +312,9 @@ router.put("/user/:id", (req, res) => {
             res.status(400).send(apiResponse);
         } else {
             query1 = "UPDATE userpassinfo SET zones=  " +
-            "'" + zones + "'" +
-            " WHERE userpassinfo.UserName = " +
-            "'" + req.params.id + "'";
+                "'" + zones + "'" +
+                " WHERE userpassinfo.UserName = " +
+                "'" + req.params.id + "'";
             connection.query(query1, function (error, results, fields) {
                 if (error) {
                     apiResponse.message = "Error while connecting database";

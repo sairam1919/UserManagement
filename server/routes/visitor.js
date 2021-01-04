@@ -230,7 +230,7 @@ router.put("/user/:id", (req, res) => {
                 "'" + zones + "'" +
                 " WHERE userpassinfo.UserName = " +
                 "'" + req.params.id + "'";
-                console.log("Query: ", query1);
+            console.log("Query: ", query1);
             connection.query(query1, function (error, results, fields) {
                 if (error) {
                     apiResponse.message = "Error while connecting database";
@@ -280,49 +280,55 @@ router.post("/updateUserInfo", (req, res) => {
                     apiResponse.result = error;
                     res.status(400).send(apiResponse);
                 } else {
-                    let UserName = resp[0].UserName;
-                    let query2 = "INSERT INTO history ( UserName,id_code,activity,location,timestamp) VALUES (" +
-                        "'" +
-                        UserName +
-                        "'" +
-                        ",  " +
-                        "'" +
-                        req.body.pass +
-                        "'" +
-                        ",  " +
-                        "'" +
-                        req.body.type +
-                        "'" +
-                        ",  " +
-                        "'" +
-                        req.body.location +
-                        "'" +
-                        ",  " +
-                        "'" +
-                        req.body.time +
-                        "'" +
-                        " )";
-                    connection.query(
-                        query2,
-                        function (error, results, fields) {
-                            if (error) {
-                                apiResponse.message = "User Updated Successfully, Error while updating the History";
-                                apiResponse.statuscode = "400";
-                                apiResponse.result = error;
-                                res.status(400).send(apiResponse);
-                            } else {
-                                apiResponse.statuscode = "200";
-                                apiResponse.message = "User Updated Successfully, Successfully Updated the History";
-                                apiResponse.result = results;
-                                res.status(200).send(apiResponse);
+                    if (resp.length) {
+                        let UserName = resp[0].UserName;
+                        let query2 = "INSERT INTO history ( UserName,id_code,activity,location,timestamp) VALUES (" +
+                            "'" +
+                            UserName +
+                            "'" +
+                            ",  " +
+                            "'" +
+                            req.body.pass +
+                            "'" +
+                            ",  " +
+                            "'" +
+                            req.body.type +
+                            "'" +
+                            ",  " +
+                            "'" +
+                            req.body.location +
+                            "'" +
+                            ",  " +
+                            "'" +
+                            req.body.time +
+                            "'" +
+                            " )";
+                        connection.query(
+                            query2,
+                            function (error, results, fields) {
+                                if (error) {
+                                    apiResponse.message = "User Updated Successfully, Error while updating the History";
+                                    apiResponse.statuscode = "400";
+                                    apiResponse.result = error;
+                                    res.status(400).send(apiResponse);
+                                } else {
+                                    apiResponse.statuscode = "200";
+                                    apiResponse.message = "User Updated Successfully, Successfully Updated the History";
+                                    apiResponse.result = results;
+                                    res.status(200).send(apiResponse);
+                                }
                             }
-                        }
-                    );
+                        );
+                    } else {
+                        apiResponse.statuscode = "2002";
+                        apiResponse.message = "User Not Found in the Database";
+                        apiResponse.result = "";
+                        res.status(500).send(apiResponse);
+                    }
                 }
             });
         }
     });
-
 });
 
 //GET API to Fetch all Users
