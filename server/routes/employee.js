@@ -346,18 +346,25 @@ router.put("/user/changePassword/:id", (req, res) => {
             apiResponse.result = error;
             res.status(400).send(apiResponse);
         } else {
-            if (!(results[0].password === req.body.oldPassword)) {
-                apiResponse.statuscode = "404";
-                apiResponse.message = "Password Does Not Match..!";
-                apiResponse.result = "";
-                res.status(200).send(apiResponse);
+            if (results.length) {
+                let decipher = crypto.createDecipher(algorithm, key);
+                let Password = decipher.update(results[0].password, 'hex', 'utf8') + decipher.final('utf8');
+                if (!(Password === req.body.oldPassword)) {
+                    apiResponse.statuscode = "404";
+                    apiResponse.message = "Password Does Not Match..!";
+                    apiResponse.result = "";
+                    res.status(400).send(apiResponse);
+                }
             }
         }
     });
+
+    let cipher = crypto.createCipher(algorithm, key);
+    let newPassword = cipher.update(req.body.newPassword, 'utf8', 'hex') + cipher.final('hex');
     var query2 =
         "UPDATE employee SET password= " +
         "'" +
-        req.body.newPassword +
+        newPassword +
         "'" +
         " WHERE employee.UserName=" +
         "'" +
