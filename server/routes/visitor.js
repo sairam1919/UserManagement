@@ -269,7 +269,7 @@ router.post("/updateUserInfo", (req, res) => {
                     "'" + req.body.pass + "'";
             } else if (req.body.type === "out") {
                 query1 = "UPDATE userpassinfo SET OutTime=  " +
-                    "'" + req.body.time + "'" + "," + "Current_Location = " + "" +
+                    "'" + req.body.time + "'" + "," + "Current_Location = " + null +
                     " WHERE userpassinfo.id_code = " +
                     "'" + req.body.pass + "'";
             }
