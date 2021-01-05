@@ -80,6 +80,8 @@ router.post("/user", (req, res) => {
     let id_code = req.body.id_code;
     let pass_status = req.body.pass_status;
     let zones = req.body.zones;
+    let from = req.body.from;
+    let to = req.body.to;
 
     var query1 =
         "INSERT INTO visitor ( UserName, MobileNo, IssuedBy, IssuedDateTime, access_locations, UserData, first_name, last_name ) VALUES (" +
@@ -123,7 +125,7 @@ router.post("/user", (req, res) => {
             res.status(400).send(apiResponse);
         } else {
             var query2 =
-                "INSERT INTO userpassinfo ( UserPass, UserName, UserImage, UserIDProof, UserIDProofNumber, PassImage, ExpairyDate, user_type, id_code, pass_status, zones) VALUES (" +
+                "INSERT INTO userpassinfo ( UserPass, UserName, UserImage, UserIDProof, UserIDProofNumber, PassImage, ExpairyDate, user_type, id_code, pass_status, zones, from, to) VALUES (" +
                 "'" +
                 userPass +
                 "'" +
@@ -166,6 +168,14 @@ router.post("/user", (req, res) => {
                 ",  " +
                 "'" +
                 zones +
+                "'" +
+                ",  " +
+                "'" +
+                from +
+                "'" +
+                ",  " +
+                "'" +
+                to +
                 "'" +
                 " )";
             connection.query(query2, function (error, results, fields) {
@@ -282,7 +292,7 @@ router.post("/updateUserInfo", (req, res) => {
                 } else {
                     if (resp.length) {
                         let UserName = resp[0].UserName;
-                        let query2 = "INSERT INTO history ( UserName,id_code,activity,location,timestamp) VALUES (" +
+                        let query2 = "INSERT INTO history ( UserName,id_code,activity,location,timestamp,status) VALUES (" +
                             "'" +
                             UserName +
                             "'" +
@@ -301,6 +311,10 @@ router.post("/updateUserInfo", (req, res) => {
                             ",  " +
                             "'" +
                             req.body.time +
+                            "'" +
+                            ",  " +
+                            "'" +
+                            req.body.status +
                             "'" +
                             " )";
                         connection.query(
