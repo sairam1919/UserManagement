@@ -1,0 +1,22 @@
+{
+    "name": "UserManagement",
+    "version": "0.1.0",
+    "private": false,
+    "homepage": "/",
+    "proxy": "http://localhost:4000",
+    "dependencies": {
+        "cookie-parser": "^1.4.5",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "history": "^4.10.1",
+        "morgan": "^1.10.0",
+        "mssql": "^6.2.3",
+        "node-windows": "^1.0.0-beta.5"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom --coverage"
+    },
+    "devDependencies": {}
+}
