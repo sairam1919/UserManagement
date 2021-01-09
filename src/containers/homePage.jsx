@@ -3,6 +3,7 @@ import Employees from "./dashboard/employees";
 import Visitors from "./dashboard/visitors";
 import Dashboard from "./dashboard/Dashboard";
 import Constants from "../Constants";
+import History from "./dashboard/history";
 
 const HomePage = (props) => {
   const [currentComponent, setCurrentComponent] = useState("dashboard");
@@ -136,6 +137,15 @@ const HomePage = (props) => {
         />
       );
       break;
+      case "history":
+        renderComponent = (
+          <History
+            handleMenuClick={(menu) => handleMenuClick(menu)}
+            handleClose={handleClose}
+            config={config}
+          />
+        );
+        break;
     default:
       renderComponent = (
         <Dashboard

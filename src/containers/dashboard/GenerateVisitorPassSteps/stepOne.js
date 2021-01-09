@@ -78,6 +78,7 @@ const StepOne = ({ handleNext }) => {
 
     const handleFileRead = async (event) => {
         const file = event.target.files[0]
+        console.log(file)
         setValues({...values, userIdProofImage: event.target.value})
         const base64 = await convertBase64(file)
         setImage(base64);

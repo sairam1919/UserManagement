@@ -1,15 +1,16 @@
 import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import React, { useState, useEffect } from 'react';
-import { FormControl, Select, MenuItem, InputLabel, TextField, Button } from '@material-ui/core';
 import Fab from '@material-ui/core/Fab';
 import CloseIcon from '@material-ui/icons/Close';
 import { v4 as uuidv4 } from 'uuid';
+import { StepOne } from "./Employee/stepOne";
+import { StepTwo } from "./Employee/stepTwo";
+import {  MenuItem, Button } from '@material-ui/core';
 
 const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, empData, config }) => {
+    const [step, setStep] = useState(1);
     const [values, setValues] = useState({
         UserName: empData && empData.UserName || "",
         MobileNo: empData && empData.MobileNo || "",
@@ -99,6 +100,13 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
         }
     },[values,checkDataToEnable])
      
+const handleImage= (dataUrl) => {
+    setValues({ ...values, userPassImage: dataUrl, userImage: dataUrl, userIdProofImage: dataUrl })
+}
+   const handleNext = () => {
+        setStep(2);
+    };
+
     return (
         < Dialog open={isOpen} >
             < DialogTitle style={{ backgroundColor: 'rgb(54, 65, 83)', color: 'white', fontWeight: 500 }} >
@@ -110,124 +118,26 @@ const EditEmployee = ({ isOpen, handleClose, handleSaveEmployee, isEditUser, emp
                     <CloseIcon />
                 </Fab>
             </DialogTitle>
-            <DialogContent>
-                <DialogContentText style={{ textAlign: 'center' }} >
-                    {!isEditUser ? < TextField
-                        label="User Name"
-                        placeholder="Enter User Name (Required Field)"
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={
-                            {
-                                shrink: true,
-                            }
-                        }
-                        variant="outlined"
-                        name="UserName"
-                        onChange={handleChange}
-                        error={!values.UserName}
-                        values={values.UserName}
-                    /> : ''}
-                    < TextField
-                        label="Mobile Number"
-                        placeholder="Enter Mobile Number (Required Field)"
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={
-                            {
-                                shrink: true,
-                            }
-                        }
-                        variant="outlined"
-                        name="MobileNo"
-                        onChange={handleChange}
-                        error={!values.MobileNo}
-                        value={values.MobileNo}
-                    />
-                    <TextField
-                        label="First Name"
-                        placeholder="Enter First Name (Required Field)"
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={
-                            {
-                                shrink: true,
-                            }
-                        }
-                        variant="outlined"
-                        name="first_name"
-                        onChange={handleChange}
-                        error={!values.first_name}
-                        value={values.first_name}
-
-                    />
-                    <TextField
-                        label="Last Name"
-                        placeholder="Enter Last Name (Required Field)"
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={
-                            {
-                                shrink: true,
-                            }
-                        }
-                        variant="outlined"
-                        name="last_name"
-                        onChange={handleChange}
-                        error={!values.last_name}
-                        value={values.last_name}
-
-                    />
-                    <TextField
-                        label="RF ID Number"
-                        placeholder="Enter RF ID (Required Field)"
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={
-                            {
-                                shrink: true,
-                            }
-                        }
-                        variant="outlined"
-                        name="id_code"
-                        onChange={handleChange}
-                        error={!values.id_code}
-                        value={values.id_code}
-                    />
-                    <FormControl variant="outlined" fullWidth >
-                        <InputLabel id="role-select-outlined-label" > Role </InputLabel>
-                        <Select style={{ textAlign: 'left' }}
-                            fullWidth
-                            label="Role"
-                            inputProps={
-                                {
-                                    shrink: true,
-                                }
-                            }
-                            placeholder="Select Role"
-                            variant="outlined"
-                            name="role"
-                            onChange={handleChange}
-                            value={values.role}
-                            error={!values.role}
-                        >
-                            {
-                                options.map(option => (
-                                    <option value={option.value} > { option.label} </option>
-                                ))}
-                        </Select>
-                    </FormControl>
-
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions >
-                <Button style={
+            { step === 1 ? 
+            <StepOne isEditUser={isEditUser} options={options} values={values} handleChange={handleChange}/> : 
+            <StepTwo handleImage={handleImage}/>}
+            <DialogActions>
+                { step === 1 ? <Button style={
                     { backgroundColor: 'green', color: 'white' }
                 }
                     variant="contained"
-                    onClick={checkDataToEnable ? null : handleSave}
+                    onClick={checkDataToEnable ? null : handleNext}
                     disabled={checkDataToEnable}
-                > Save </Button>
+                > Next </Button>
+            :
+            <Button style={
+                { backgroundColor: 'green', color: 'white' }
+            }
+                variant="contained"
+                onClick={checkDataToEnable ? null : handleSave}
+                disabled={checkDataToEnable}
+            > Save </Button> }
+                
             </DialogActions>
         </Dialog>
     );

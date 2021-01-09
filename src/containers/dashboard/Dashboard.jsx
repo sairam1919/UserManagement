@@ -114,6 +114,12 @@ class Dashboard extends React.Component {
             menuIcon={<VpnKeyIcon />}
             menuClick={() => this.handleChangePassword()}
           />
+
+          <MenuCard
+            menuLabel="History"
+            menuIcon={<PeopleIcon />}
+            menuClick={() => this.menuClick("history")}
+          />
         </Grid>
       </Container>
     );
