@@ -1,6 +1,6 @@
-CREATE EVENT pass_statuc_check
+CREATE EVENT pass_status_check
     ON SCHEDULE
       EVERY 1 DAY
     COMMENT 'checks the pass activity status'
     DO
-      UPDATE usermanagement.userpassinfo SET pass_status = 'Expired' WHERE ExpairyDate = CURDATE();
+      UPDATE usermanagement.userpassinfo SET pass_status = 'Expired' WHERE ExpairyDate <= CURDATE() AND user_type = 'visitor';

@@ -3,5 +3,6 @@ CREATE TABLE usermanagement.`history` (
   `id_code` varchar(250) NOT NULL,
   `activity` varchar(45) NOT NULL,
   `location` text NOT NULL,
-  `timestamp` text NOT NULL
+  `timestamp` text NOT NULL,
+  `status` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
