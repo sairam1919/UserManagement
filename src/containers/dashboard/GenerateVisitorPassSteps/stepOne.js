@@ -5,6 +5,11 @@ import { TextField, Button } from '@material-ui/core';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import Constants from '../../../Constants';
+// import {
+//     KeyboardDateTimePicker,
+//     MuiPickersUtilsProvider
+//   } from '@material-ui/pickers';
+  import { TimePickerView } from '@material-ui/pickers';
 
 const StepOne = ({ handleNext }) => {
     const [values, setValues] = useState({
@@ -13,8 +18,8 @@ const StepOne = ({ handleNext }) => {
         issuedBy: "",
         issuedDateTime: "",
         access_locations: {},
-        inTime: "",
-        outtime: "",
+        from: "",
+        to: "",
         userData: {},
         current_location: "",
         userPass: "",
@@ -55,8 +60,8 @@ const StepOne = ({ handleNext }) => {
             "issuedBy": JSON.parse(localStorage.getItem('userDetails')).UserName,
             "issuedDateTime": newdate,
             "access_locations": JSON.stringify({}),
-            "inTime": "",
-            "outtime": "",
+            "from": values.from,
+            "to": values.to,
             "userData": JSON.stringify({ "email": values.email, "address": values.address, "representing": values.representing, "purposeOfVisit": values.purposeOfVisit }),
             "current_location": "",
             "userPass": uuidv4(),
@@ -78,10 +83,14 @@ const StepOne = ({ handleNext }) => {
 
     const handleFileRead = async (event) => {
         const file = event.target.files[0]
-        console.log(file)
+        if(file && file.size <= 90000) {
         setValues({...values, userIdProofImage: event.target.value})
         const base64 = await convertBase64(file)
         setImage(base64);
+        } else {
+            alert(`File upload should be greater than 90 kb size, Size of your file is ${file.size/1000} kb`);
+        }
+        
       }
 
       const convertBase64 = (file) => {
@@ -282,6 +291,40 @@ type="date"
                     name="expiryDate"
                     value={values.expiryDate}
                     error={!values.expiryDate}
+                    onChange={handleChange}
+                />
+
+<TextField
+type="time"
+                    label="In Time"
+                    placeholder="Enter In Time in 24hrs format like  13:45"
+                    fullWidth margin="normal"
+                    InputLabelProps={
+                        {
+                            shrink: true,
+                        }
+                    }
+                    variant="outlined"
+                    name="from"
+                    value={values.from}
+                    error={!values.from}
+                    onChange={handleChange}
+                />
+
+<TextField
+type="time"
+                    label="Out Time"
+                    placeholder="Enter Out Time"
+                    fullWidth margin="normal"
+                    InputLabelProps={
+                        {
+                            shrink: true,
+                        }
+                    }
+                    variant="outlined"
+                    name="to"
+                    value={values.to}
+                    error={!values.to}
                     onChange={handleChange}
                 />
             </DialogContentText>
