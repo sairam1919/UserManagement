@@ -125,7 +125,7 @@ router.post("/user", (req, res) => {
             res.status(400).send(apiResponse);
         } else {
             var query2 =
-                "INSERT INTO userpassinfo ( UserPass, UserName, UserImage, UserIDProof, UserIDProofNumber, PassImage, ExpairyDate, user_type, id_code, pass_status, zones, from, to) VALUES (" +
+                "INSERT INTO userpassinfo ( UserPass, UserName, UserImage, UserIDProof, UserIDProofNumber, PassImage, ExpairyDate, user_type, id_code, pass_status, zones, fromTime, toTime) VALUES (" +
                 "'" +
                 userPass +
                 "'" +
