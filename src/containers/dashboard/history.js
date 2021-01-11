@@ -7,7 +7,7 @@ import EditAccessRemove from "./editAccessRemove";
 import { Button, FormControlLabel,Checkbox, TextField, Drawer} from "@material-ui/core";
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-const Visitors = ({ handleMenuClick, config }) => {
+const history = ({ handleMenuClick, config }) => {
   const [searchValue, setSearchValue] = useState("");
 
   const [ state, setState] = useState(false);
@@ -262,4 +262,5 @@ const Visitors = ({ handleMenuClick, config }) => {
     </div>
   );
 };
-export default Visitors;
+
+export default history;
