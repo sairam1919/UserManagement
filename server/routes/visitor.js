@@ -34,6 +34,26 @@ router.get("/user", (req, res) => {
     );
 });
 
+router.get("/user/data", (req, res) => {
+    connection.query(
+        "SELECT UserName,UserPass,ExpairyDate,user_type,id_code,pass_status,zones,Current_Location,InTime,OutTime,fromTime,toTime FROM userpassinfo WHERE userpassinfo.user_type = 'visitor'",
+        function (error, results, fields) {
+            if (error) {
+                apiResponse.message = "Error while connecting database";
+                apiResponse.statuscode = "400";
+                apiResponse.result = error;
+                res.status(400).send(apiResponse);
+            } else {
+                console.log("Inside the connection2", results);
+                apiResponse.statuscode = "200";
+                apiResponse.message = "Successfully Fetched the Details";
+                apiResponse.result = results;
+                res.status(200).send(apiResponse);
+            }
+        }
+    );
+});
+
 //GET API to Fetch a Specific User Data
 router.get("/user/:id", (req, res) => {
     var query1 =
