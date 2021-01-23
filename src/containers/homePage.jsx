@@ -75,7 +75,7 @@ const HomePage = (props) => {
           }
         })
         .then((data) => {
-          alert(data.message);
+          data.message?alert(data.message):console.log("data")
         });
     } else {
       let url = Constants.UPDATE_EMPLOYEE + obj.addUserObject.UserName;

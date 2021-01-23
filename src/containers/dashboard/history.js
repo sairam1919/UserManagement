@@ -23,7 +23,7 @@ const history = ({ handleMenuClick, config }) => {
     locations: []
   })
   useEffect(() => {
-    var url = Constants.FETCH_ALL_VISITORS;
+    var url = Constants.GET_HISTORY;
     fetch(url, {
       method: "GET",
       headers: {
@@ -37,6 +37,7 @@ const history = ({ handleMenuClick, config }) => {
       })
       .then((data) => {
         if (data) {
+          console.log("data", data.result)
           setVisitorInfo(data.result);
         }
       });
@@ -76,36 +77,30 @@ const history = ({ handleMenuClick, config }) => {
   };
   const columns = [
     {
-      dataField: "first_name",
-      text: "First Name",
-      sort: true,
-    },
-    {
-      dataField: "last_name",
-      text: "Last Name",
-      sort: true,
-    },
-    {
       dataField: "UserName",
-      text: "ID Number",
+      text: "User Name",
       sort: true,
     },
     {
-      dataField: "ExpairyDate",
-      text: "Validity",
+      dataField: "activity",
+      text: "Activity",
       sort: true,
     },
     {
-      dataField: "Current_Location",
-      text: "Current Location",
+      dataField: "location",
+      text: "Location",
       sort: true,
     },
     {
-      dataField: "AccessRemove",
-      text: "Access / Remove",
-      formatter: (cell, row, rowIndex, formatExtraData) =>
-        linkFollow(cell, row, rowIndex, formatExtraData),
+      dataField: "status",
+      text: "Status",
+      sort: true,
     },
+    {
+      dataField: "timestamp",
+      text: "Timestamp",
+      sort: true,
+    }
   ];
 
   let rows = visitorInfo;

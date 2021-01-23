@@ -10,7 +10,7 @@ const key = 'password';
 var connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "Sram@225",
+    password: "visM@n123",
     database: "usermanagement",
 });
 
@@ -82,8 +82,10 @@ router.post("/login", (req, res) => {
         } else {
             if (results.length) {
                 let decipher = crypto.createDecipher(algorithm, key);
-                let Password = decipher.update(results[0].password, 'hex', 'utf8') + decipher.final('utf8');
-                if (
+               // let Password = results[0].password
+                 let Password = decipher.update(results[0].password, 'hex', 'utf8') + decipher.final('utf8');
+                console.log("passwoprd",Password)
+                 if (
                     results[0].UserName.toLowerCase() === UserName.toLowerCase() &&
                     Password === req.body.password
                 ) {
@@ -348,7 +350,9 @@ router.put("/user/changePassword/:id", (req, res) => {
         } else {
             if (results.length) {
                 let decipher = crypto.createDecipher(algorithm, key);
-                let Password = decipher.update(results[0].password, 'hex', 'utf8') + decipher.final('utf8');
+              //  let Password = results[0].password
+                 let Password = decipher.update(results[0].password, 'hex', 'utf8') + decipher.final('utf8');
+               
                 if (!(Password === req.body.oldPassword)) {
                     apiResponse.statuscode = "404";
                     apiResponse.message = "Password Does Not Match..!";

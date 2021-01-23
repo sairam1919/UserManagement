@@ -13,5 +13,7 @@ export default Object.freeze({
    UPDATE_EMPLOYEE: APP_IP_PORT + "/employee/user/",
    UPDATE_VISITOR: APP_IP_PORT + "/visitor/user/",
    ASSIGN_REMOVE_ACCESS_VISITOR: APP_IP_PORT + "/visitor/assignremove/",
-   USER_IMAGE: "data:image/jpeg;base64,"
+   USER_IMAGE: "data:image/jpeg;base64,",
+   GET_HISTORY:"/visitor/history",
+   GET_ONLY_DATA:APP_IP_PORT +"/visitor/user/data"
 });

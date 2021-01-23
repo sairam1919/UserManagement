@@ -7,7 +7,7 @@ const logger = require("morgan");
 var connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "Sram@225",
+    password: "visM@n123",
     database: "usermanagement",
 });
 
