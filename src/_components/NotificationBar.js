@@ -95,7 +95,7 @@ const getVisitorInfo = ()=>{
     useEffect(() => {
         const interval = setInterval(() => {
             getVisitorInfo()
-          }, 10000);
+          }, 30000);
           return () => clearInterval(interval);
       }, []);
       //console.log("blah 22222",allCulprits)

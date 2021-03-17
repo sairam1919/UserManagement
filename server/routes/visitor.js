@@ -283,7 +283,7 @@ router.post("/updateUserInfo", (req, res) => {
         "SELECT * FROM userpassinfo WHERE userpassinfo.id_code =" +
         "'" +
         req.body.pass +
-        "'" + " AND userpassinfo.pass_status = 'Active'";
+        "'" ;
     connection.query(query1, function (error, results, fields) {
         if (error) {
             apiResponse.message = "Error while connecting database";
@@ -312,6 +312,7 @@ router.post("/updateUserInfo", (req, res) => {
                 } else {
                     if (resp.length) {
                         let UserName = resp[0].UserName;
+                        console.log("inserted into history",resp.length )
                         let query2 = "INSERT INTO history ( UserName,id_code,activity,location,timestamp,status) VALUES (" +
                             "'" +
                             UserName +
